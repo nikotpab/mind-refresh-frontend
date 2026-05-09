@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <nav class="flex-1 px-2 space-y-1">
+    <nav class="flex-1 px-2 space-y-1" *ngIf="currentUser$ | async as user">
         <a routerLink="/collaborator-dashboard"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
@@ -19,7 +19,8 @@
             Dashboard
         </a>
 
-        <a routerLink="/sentiment-analytics"
+        <a *ngIf="user.role === 'admin'"
+           routerLink="/sentiment-analytics"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
             <span class="material-symbols-outlined mr-3">sentiment_satisfied</span>
@@ -34,7 +35,8 @@
             Events
         </a>
 
-        <a routerLink="/strategic-dashboard"
+        <a *ngIf="user.role === 'admin'"
+           routerLink="/strategic-dashboard"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
             <span class="material-symbols-outlined mr-3">settings</span>
