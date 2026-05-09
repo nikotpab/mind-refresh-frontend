@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../core/auth/auth';
 
 @Component({
   selector: 'app-topbar',
@@ -11,6 +12,8 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class Topbar {
   profileMenuOpen = false;
+  private authService = inject(AuthService);
+  currentUser$ = this.authService.currentUser$;
 
   constructor(private router: Router) {}
 
@@ -34,6 +37,7 @@ export class Topbar {
 
   logout(): void {
     this.profileMenuOpen = false;
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

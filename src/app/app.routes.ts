@@ -7,14 +7,16 @@ import { CollaboratorDashboard } from './pages/collaborator-dashboard/collaborat
 import { SentimentAnalytics } from './pages/sentiment-analytics/sentiment-analytics';
 import { StrategicDashboard } from './pages/strategic-dashboard/strategic-dashboard';
 import { DashboardLayout } from './layouts/dashboard-layout/dashboard-layout';
+import { AuthGuard } from './core/auth/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'emotional-record', component: EmotionalRecord },
+  { path: 'emotional-record', component: EmotionalRecord, canActivate: [AuthGuard] },
   {
     path: '',
     component: DashboardLayout,
+    canActivate: [AuthGuard],
     children: [
       { path: 'collaborator-dashboard', component: CollaboratorDashboard },
       { path: 'event-catalog', component: EventCatalog },
