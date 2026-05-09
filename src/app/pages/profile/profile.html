@@ -1,0 +1,53 @@
+<main class="p-6 md:p-8 max-w-4xl mx-auto">
+    <div class="neo-raised bg-surface rounded-2xl p-8">
+        <div class="flex items-center gap-6 mb-8 pb-8 border-b border-surface-container-high">
+            <div class="w-24 h-24 rounded-full neo-pressed overflow-hidden flex items-center justify-center p-1 bg-surface">
+                <img alt="Profile" class="w-full h-full rounded-full object-cover" 
+                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-e0g84OuXcUJfZD6Jj0PlXTG4xbL6BFDAFfMqhDNL0eWxU8rrht4KlA6xun38BhDu3Sm6sIjfM8i_v29PsNdPZjyspZs3xYxx0qz_LSQ5pPXdVeJ6-dPTd7duBVGLejPvxoZaOa7YROliLjOuXd_oU46I-iITjk9AMEp2iwDafYxPPiJ1tV6bAeF4KIN6HEV7wadjDAAjN4_Y-ipWGlM02xjlNcBw2KNCRcmzOp7TCG5pOVpUujZ1gtaDvFKvcXMbTDyD4ZpJTn8"/>
+            </div>
+            <div>
+                <h1 class="text-3xl font-headline font-bold text-on-surface mb-1">Manage Profile</h1>
+                <p class="text-on-surface-variant font-medium">Update your account information and preferences.</p>
+            </div>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Name -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-wider ml-1">Full Name</label>
+                    <div class="neo-pressed bg-surface rounded-xl p-4 flex items-center gap-3">
+                        <span class="material-symbols-outlined text-primary">person</span>
+                        <input type="text" formControlName="name" class="bg-transparent border-none outline-none w-full text-on-surface font-medium" placeholder="Your Name">
+                    </div>
+                </div>
+
+                <!-- Email (Disabled) -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-wider ml-1">Email Address</label>
+                    <div class="bg-surface-container-low rounded-xl p-4 flex items-center gap-3 opacity-60">
+                        <span class="material-symbols-outlined text-secondary">mail</span>
+                        <input type="email" formControlName="email" class="bg-transparent border-none outline-none w-full text-on-surface font-medium cursor-not-allowed">
+                    </div>
+                </div>
+
+                <!-- Role (Disabled) -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-wider ml-1">Account Role</label>
+                    <div class="bg-surface-container-low rounded-xl p-4 flex items-center gap-3 opacity-60">
+                        <span class="material-symbols-outlined text-secondary">verified_user</span>
+                        <input type="text" formControlName="role" class="bg-transparent border-none outline-none w-full text-on-surface font-medium capitalize cursor-not-allowed">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-8 flex justify-end">
+                <button type="submit" [disabled]="profileForm.invalid" 
+                        class="neo-btn bg-primary text-white font-headline font-bold py-4 px-10 rounded-xl flex items-center gap-2 hover:scale-[1.02] transition-all disabled:opacity-50">
+                    <span class="material-symbols-outlined">save</span>
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</main>

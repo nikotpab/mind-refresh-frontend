@@ -8,6 +8,8 @@ import { SentimentAnalytics } from './pages/sentiment-analytics/sentiment-analyt
 import { StrategicDashboard } from './pages/strategic-dashboard/strategic-dashboard';
 import { DashboardLayout } from './layouts/dashboard-layout/dashboard-layout';
 import { AuthGuard } from './core/auth/auth-guard';
+import { RoleGuard } from './core/auth/role-guard';
+import { Profile } from './pages/profile/profile';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -20,9 +22,10 @@ export const routes: Routes = [
     children: [
       { path: 'collaborator-dashboard', component: CollaboratorDashboard },
       { path: 'event-catalog', component: EventCatalog },
-      { path: 'event-management', component: EventManagement },
-      { path: 'sentiment-analytics', component: SentimentAnalytics },
-      { path: 'strategic-dashboard', component: StrategicDashboard },
+      { path: 'event-management', component: EventManagement, canActivate: [RoleGuard], data: { role: 'admin' } },
+      { path: 'sentiment-analytics', component: SentimentAnalytics, canActivate: [RoleGuard], data: { role: 'admin' } },
+      { path: 'strategic-dashboard', component: StrategicDashboard, canActivate: [RoleGuard], data: { role: 'admin' } },
+      { path: 'profile', component: Profile },
     ]
   },
 ];

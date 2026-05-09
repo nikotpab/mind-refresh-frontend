@@ -24,6 +24,7 @@ export class Topbar {
     if (url.includes('event-catalog')) return 'Event Catalog';
     if (url.includes('event-management')) return 'Event Management';
     if (url.includes('strategic-dashboard')) return 'Executive Dashboard';
+    if (url.includes('profile')) return 'User Profile';
     return 'Mind Refresh';
   }
 
