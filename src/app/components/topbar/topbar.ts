@@ -1,0 +1,39 @@
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-topbar',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './topbar.html',
+  styleUrls: ['./topbar.css']
+})
+export class Topbar {
+  profileMenuOpen = false;
+
+  constructor(private router: Router) {}
+
+  get pageTitle(): string {
+    const url = this.router.url;
+    if (url.includes('collaborator-dashboard')) return 'Dashboard';
+    if (url.includes('sentiment-analytics')) return 'Sentiment Insights';
+    if (url.includes('event-catalog')) return 'Event Catalog';
+    if (url.includes('event-management')) return 'Event Management';
+    if (url.includes('strategic-dashboard')) return 'Executive Dashboard';
+    return 'Mind Refresh';
+  }
+
+  toggleProfileMenu(): void {
+    this.profileMenuOpen = !this.profileMenuOpen;
+  }
+
+  closeProfileMenu(): void {
+    this.profileMenuOpen = false;
+  }
+
+  logout(): void {
+    this.profileMenuOpen = false;
+    this.router.navigate(['/login']);
+  }
+}

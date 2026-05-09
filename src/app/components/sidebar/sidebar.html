@@ -1,0 +1,51 @@
+<aside class="sidebar-container">
+    <div class="px-6 mb-8">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full neo-pressed overflow-hidden flex items-center justify-center">
+                <img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-e0g84OuXcUJfZD6Jj0PlXTG4xbL6BFDAFfMqhDNL0eWxU8rrht4KlA6xun38BhDu3Sm6sIjfM8i_v29PsNdPZjyspZs3xYxx0qz_LSQ5pPXdVeJ6-dPTd7duBVGLejPvxoZaOa7YROliLjOuXd_oU46I-iITjk9AMEp2iwDafYxPPiJ1tV6bAeF4KIN6HEV7wadjDAAjN4_Y-ipWGlM02xjlNcBw2KNCRcmzOp7TCG5pOVpUujZ1gtaDvFKvcXMbTDyD4ZpJTn8"/>
+            </div>
+            <div>
+                <h2 class="text-lg font-headline font-semibold text-primary leading-tight">Mind Refresh</h2>
+                <p class="text-xs text-on-surface-variant font-medium">Corporate Wellness</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="flex-1 px-2 space-y-1">
+        <a routerLink="/collaborator-dashboard"
+           routerLinkActive="sidebar-link-active"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">dashboard</span>
+            Dashboard
+        </a>
+
+        <a routerLink="/sentiment-analytics"
+           routerLinkActive="sidebar-link-active"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">sentiment_satisfied</span>
+            Insights
+        </a>
+
+        <a routerLink="/event-catalog"
+           routerLinkActive="sidebar-link-active"
+           [routerLinkActiveOptions]="{exact: false}"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">calendar_month</span>
+            Events
+        </a>
+
+        <a routerLink="/strategic-dashboard"
+           routerLinkActive="sidebar-link-active"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">settings</span>
+            Settings
+        </a>
+    </nav>
+
+    <div class="px-4 mt-auto">
+        <button routerLink="/emotional-record" class="neo-btn w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-primary font-semibold">
+            <span class="material-symbols-outlined text-[20px]">add</span>
+            New Check-in
+        </button>
+    </div>
+</aside>

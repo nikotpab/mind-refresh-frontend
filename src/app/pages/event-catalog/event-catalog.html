@@ -1,72 +1,4 @@
-<!-- Desktop SideNav (Hidden on Mobile) -->
-<nav class="hidden md:flex flex-col bg-surface h-screen w-64 rounded-r-xl shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] fixed left-0 top-0 py-6 z-40">
-<div class="px-6 mb-10 flex items-center gap-3">
-<div class="w-10 h-10 rounded-full neo-inset flex items-center justify-center text-primary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">spa</span>
-</div>
-<div>
-<h1 class="text-lg font-headline font-bold text-primary tracking-tight">Mind Refresh</h1>
-<p class="text-xs text-on-surface-variant font-medium">Corporate Wellness</p>
-</div>
-</div>
-<div class="flex-1 px-4 space-y-2">
-<a class="flex items-center px-4 py-3 mx-2 my-1 text-on-surface-variant hover:shadow-[4px_4px_8px_rgba(0,0,0,0.04)] rounded-lg transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined mr-3">dashboard</span>
-<span class="font-medium text-sm">Dashboard</span>
-</a>
-<a class="flex items-center px-4 py-3 mx-2 my-1 text-on-surface-variant hover:shadow-[4px_4px_8px_rgba(0,0,0,0.04)] rounded-lg transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined mr-3">sentiment_satisfied</span>
-<span class="font-medium text-sm">Insights</span>
-</a>
-<a class="bg-surface text-primary shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] rounded-lg mx-2 flex items-center px-4 py-3 transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">calendar_month</span>
-<span class="font-semibold text-sm">Events</span>
-</a>
-<a class="flex items-center px-4 py-3 mx-2 my-1 text-on-surface-variant hover:shadow-[4px_4px_8px_rgba(0,0,0,0.04)] rounded-lg transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined mr-3">monitoring</span>
-<span class="font-medium text-sm">Analytics</span>
-</a>
-<a class="flex items-center px-4 py-3 mx-2 my-1 text-on-surface-variant hover:shadow-[4px_4px_8px_rgba(0,0,0,0.04)] rounded-lg transition-all duration-200 ease-in-out" href="#">
-<span class="material-symbols-outlined mr-3">settings</span>
-<span class="font-medium text-sm">Settings</span>
-</a>
-</div>
-<div class="px-6 mt-auto">
-<button class="w-full neo-button text-primary font-semibold py-3 rounded-xl flex items-center justify-center gap-2">
-<span class="material-symbols-outlined">add_circle</span>
-                New Check-in
-            </button>
-</div>
-</nav>
-<!-- Mobile TopAppBar -->
-<header class="md:hidden flex justify-between items-center w-full px-6 py-4 max-w-full mx-auto bg-surface shadow-[6px_6px_12px_rgba(0,0,0,0.08),-6px_-6px_12px_rgba(255,255,255,0.6)] docked full-width top-0 sticky z-40">
-<div class="text-xl font-headline font-extrabold text-primary tracking-tight">Mind Refresh</div>
-<div class="flex gap-4">
-<button class="w-10 h-10 rounded-full neo-raised flex items-center justify-center text-on-surface hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] transition-all duration-300 active:scale-95">
-<span class="material-symbols-outlined text-primary">notifications</span>
-</button>
-<button class="w-10 h-10 rounded-full neo-raised flex items-center justify-center text-on-surface hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] transition-all duration-300 active:scale-95">
-<span class="material-symbols-outlined text-primary">account_circle</span>
-</button>
-</div>
-</header>
-<!-- Main Content Canvas -->
-<main class="p-6 md:p-10 max-w-7xl mx-auto space-y-10">
-<!-- Header Section -->
-<header class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-<div>
-<h2 class="text-4xl md:text-5xl font-display font-bold text-on-surface tracking-tight mb-2">Wellness Event Catalog</h2>
-<p class="text-on-surface-variant text-lg max-w-2xl">Discover and enroll in sessions designed to recharge your mind and body.</p>
-</div>
-<!-- Unified Search & Filter Bar -->
-<div class="flex items-center gap-4 bg-surface neo-inset rounded-full p-2 w-full md:w-auto">
-<div class="flex items-center pl-4 pr-2 text-on-surface-variant">
-<span class="material-symbols-outlined">search</span>
-</div>
-<input class="bg-transparent border-none outline-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant w-full md:w-64 font-medium text-sm" placeholder="Search events..." type="text"/>
-</div>
-</header>
-<!-- Filters (Neomorphic Segmented Control/Chips) -->
+<main class="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
 <section aria-label="Event Filters">
 <div class="flex flex-wrap gap-4">
 <button class="neo-button active bg-surface text-primary font-semibold px-6 py-2.5 rounded-full text-sm flex items-center gap-2">
@@ -87,11 +19,8 @@
                 </button>
 </div>
 </section>
-<!-- Bento Grid Event Layout -->
 <section class="grid grid-cols-1 md:grid-cols-12 gap-8">
-<!-- Featured Event (Large Card spanning 8 cols) -->
 <article class="md:col-span-8 neo-raised rounded-3xl p-6 md:p-8 flex flex-col justify-between relative overflow-hidden group">
-<!-- Soft Glow Overlay to simulate light source from top-left -->
 <div class="absolute -top-24 -left-24 w-64 h-64 bg-white/40 blur-3xl rounded-full pointer-events-none"></div>
 <div class="flex justify-between items-start mb-6 z-10 relative">
 <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full neo-inset text-tertiary text-xs font-bold uppercase tracking-wider">
@@ -136,7 +65,6 @@
 </div>
 </div>
 </article>
-<!-- Secondary Event (Small Card spanning 4 cols) -->
 <article class="md:col-span-4 neo-raised rounded-3xl p-6 flex flex-col h-full relative">
 <div class="flex justify-between items-start mb-4">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full neo-inset text-primary text-xs font-bold uppercase tracking-wider">
@@ -164,7 +92,6 @@
                     </button>
 </div>
 </article>
-<!-- Enrolled State Event (Small Card spanning 4 cols) -->
 <article class="md:col-span-4 neo-ridge rounded-3xl p-6 flex flex-col h-full opacity-90">
 <div class="flex justify-between items-start mb-4">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary text-on-primary shadow-sm text-xs font-bold uppercase tracking-wider">
@@ -186,13 +113,11 @@
                         Añadido a Calendario
                     </button>
 <div class="text-center">
-<a class="text-xs text-on-surface-variant underline hover:text-error transition-colors" href="#">Cancelar inscripción</a>
+<a class="text-xs text-on-surface-variant underline hover:text-error transition-colors" routerLink="/">Cancelar inscripción</a>
 </div>
 </div>
 </article>
-<!-- Regular List-Style Cards wrapped in Bento Grid -->
 <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-8">
-<!-- Card 4 -->
 <article class="neo-raised rounded-3xl p-6 flex flex-col">
 <div class="flex justify-between items-start mb-3">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full neo-inset text-tertiary text-xs font-bold uppercase tracking-wider">
@@ -208,7 +133,6 @@
                         </button>
 </div>
 </article>
-<!-- Card 5 -->
 <article class="neo-raised rounded-3xl p-6 flex flex-col">
 <div class="flex justify-between items-start mb-3">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full neo-inset text-primary text-xs font-bold uppercase tracking-wider">
@@ -227,22 +151,3 @@
 </div>
 </section>
 </main>
-<!-- Mobile BottomNavBar (Hidden on Desktop) -->
-<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface shadow-[0_-6px_12px_rgba(0,0,0,0.05),0_-6px_12px_rgba(255,255,255,0.4)] docked full-width rounded-t-xl">
-<a class="text-on-surface-variant flex flex-col items-center p-2 hover:scale-105 transition-transform active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1)]" href="#">
-<span class="material-symbols-outlined">home</span>
-<span class="font-label text-[10px] font-medium mt-1">Home</span>
-</a>
-<a class="text-on-surface-variant flex flex-col items-center p-2 hover:scale-105 transition-transform active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1)]" href="#">
-<span class="material-symbols-outlined">favorite</span>
-<span class="font-label text-[10px] font-medium mt-1">Wellness</span>
-</a>
-<a class="text-primary shadow-[inset_2px_2px_4px_rgba(0,0,0,0.06),inset_-2px_-2px_4px_rgba(255,255,255,0.5)] rounded-xl p-2 flex flex-col items-center" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">event</span>
-<span class="font-label text-[10px] font-bold mt-1">Events</span>
-</a>
-<a class="text-on-surface-variant flex flex-col items-center p-2 hover:scale-105 transition-transform active:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.1)]" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label text-[10px] font-medium mt-1">Profile</span>
-</a>
-</nav>

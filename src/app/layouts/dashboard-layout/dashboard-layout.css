@@ -1,0 +1,24 @@
+:host {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.dashboard-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-left: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+    .dashboard-main {
+        margin-left: 16rem;
+    }
+}
+
+.dashboard-content {
+    flex: 1;
+}
