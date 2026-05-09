@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #e8eaf0;
+  --error: #dc2626;
+  --error-container: #fee2e2;
+  --inverse-on-surface: #e8eaf0;
+  --inverse-primary: #a5b4fc;
+  --inverse-surface: #2e3040;
+  --on-background: #2e3040;
+  --on-error: #ffffff;
+  --on-error-container: #991b1b;
+  --on-primary: #ffffff;
+  --on-primary-container: #e0e2ff;
+  --on-secondary: #ffffff;
+  --on-secondary-container: #585a68;
+  --on-surface: #2e3040;
+  --on-surface-variant: #585a68;
+  --on-tertiary: #ffffff;
+  --on-tertiary-container: #3b1f63;
+  --outline: #8a8c9a;
+  --outline-variant: #d0d2dc;
+  --primary: #6366f1;
+  --primary-container: #818cf8;
+  --secondary: #6c6e7e;
+  --secondary-container: #d8dae6;
+  --surface: #e8eaf0;
+  --surface-bright: #edeef4;
+  --surface-container: #e2e4ea;
+  --surface-container-high: #dcdee4;
+  --surface-container-highest: #d6d8de;
+  --surface-container-low: #e5e7ed;
+  --surface-container-lowest: #f0f2f8;
+  --surface-dim: #d4d6dc;
+  --surface-tint: #6366f1;
+  --surface-variant: #dcdee4;
+  --tertiary: #7c3aed;
+  --tertiary-container: #a78bfa;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--background);
+  color: var(--on-background);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Neomorphic Core Classes */
+.neo-surface {
+  background-color: var(--surface);
+  border-radius: 12px;
+}
+
+.neo-raised {
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.6);
+}
+
+.neo-inset {
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.neo-button-primary {
+  background-color: var(--surface);
+  color: var(--primary);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.6);
+  transition: box-shadow 0.2s ease;
+}
+
+.neo-button-primary:active {
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+}
+
+.neo-card {
+  background-color: var(--surface);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.6);
+}
+
+.neo-input {
+  background-color: var(--surface);
+  border: none;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--on-surface);
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
+  outline: none;
+}
+
+.neo-input:focus {
+  /* Subtle change on focus for neomorphic inputs */
+  box-shadow: inset 6px 6px 10px rgba(0, 0, 0, 0.08), inset -6px -6px 10px rgba(255, 255, 255, 0.6);
+}
+
+app-root {
+  display: block;
+  width: 100%;
+}
