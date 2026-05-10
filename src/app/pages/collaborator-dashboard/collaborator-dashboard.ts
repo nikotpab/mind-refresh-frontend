@@ -4,6 +4,7 @@ import { AuthService } from '../../core/auth/auth';
 import { AnalyticsService } from '../../core/services/analytics.service';
 import { EventsService } from '../../core/services/events.service';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-collaborator-dashboard',
@@ -16,15 +17,18 @@ export class CollaboratorDashboard implements OnInit {
   private authService = inject(AuthService);
   private analyticsService = inject(AnalyticsService);
   private eventsService = inject(EventsService);
+  private http = inject(HttpClient);
   private cdr = inject(ChangeDetectorRef);
 
   user: any = null;
   summary: any = null;
   suggestedEvents: any[] = [];
   hasCheckedInToday = false;
+  dailyQuote: string = 'La calma es la cuna del poder. Tómate un momento para respirar y reconectar.';
 
   ngOnInit() {
     this.user = this.authService.getCurrentUser();
+    this.loadQuote();
     
     this.analyticsService.getSummary().subscribe({
       next: (data) => {
@@ -55,6 +59,20 @@ export class CollaboratorDashboard implements OnInit {
         this.cdr.detectChanges();
       },
       error: (err) => console.error('Error fetching events', err)
+    });
+  }
+
+  loadQuote() {
+    this.http.get<any>('/quotes.json').subscribe({
+      next: (data) => {
+        const quotes = data.bienestar_laboral;
+        if (quotes && quotes.length > 0) {
+          const randomIndex = Math.floor(Math.random() * quotes.length);
+          this.dailyQuote = quotes[randomIndex];
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => console.error('Error loading quotes', err)
     });
   }
 
