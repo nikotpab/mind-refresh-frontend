@@ -1,116 +1,42 @@
 <main class="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
-<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
-<div>
-<h1 class="text-3xl font-headline font-semibold text-on-surface mb-2">Mapa de Calor Emocional por Departamento</h1>
-<p class="text-on-surface-variant font-body">Visión general del bienestar organizacional y tendencias de estrés.</p>
-</div>
-<div class="flex gap-4">
-<button class="neo-raised bg-surface text-on-surface-variant font-label font-medium py-3 px-6 rounded-xl hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] transition-all duration-300 active:scale-95 flex items-center">
-<span class="material-symbols-outlined mr-2">filter_list</span>
-                    Filtrar
-                </button>
-<button class="neo-raised bg-surface text-primary font-label font-medium py-3 px-6 rounded-xl hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.06),inset_-4px_-4px_8px_rgba(255,255,255,0.5)] transition-all duration-300 active:scale-95 flex items-center">
-<span class="material-symbols-outlined mr-2">download</span>
-                    Exportar Reporte
-                </button>
-</div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="lg:col-span-2 neo-raised bg-surface rounded-xl p-8 flex flex-col">
-<div class="flex justify-between items-center mb-6">
-<h3 class="text-xl font-headline font-medium text-on-surface">Tendencias de Ánimo (Mensual)</h3>
-<div class="neo-pressed rounded-full p-1 flex">
-<button class="px-4 py-1 rounded-full text-sm font-label text-on-surface-variant">Semana</button>
-<button class="px-4 py-1 rounded-full text-sm font-label neo-raised bg-surface text-primary">Mes</button>
-</div>
-</div>
-<div class="flex-1 neo-pressed rounded-xl p-6 relative flex items-end justify-between gap-2 min-h-[250px]">
-<div class="w-1/12 bg-primary/20 rounded-t-lg h-2/3 relative group">
-<div class="absolute bottom-full mb-2 hidden group-hover:block neo-raised bg-surface text-xs p-2 rounded text-center w-full">S1</div>
-</div>
-<div class="w-1/12 bg-primary/40 rounded-t-lg h-3/4 relative group"></div>
-<div class="w-1/12 bg-primary/30 rounded-t-lg h-1/2 relative group"></div>
-<div class="w-1/12 bg-primary/60 rounded-t-lg h-4/5 relative group"></div>
-<div class="w-1/12 bg-tertiary/40 rounded-t-lg h-1/3 relative group"></div>
-<div class="w-1/12 bg-primary/50 rounded-t-lg h-2/3 relative group"></div>
-<div class="w-1/12 bg-primary rounded-t-lg h-full relative group"></div>
-<div class="w-1/12 bg-primary/70 rounded-t-lg h-4/5 relative group"></div>
-</div>
-</div>
-<div class="flex flex-col gap-6">
-<div class="neo-raised bg-surface rounded-xl p-6 border-l-4 border-error">
-<div class="flex items-start justify-between mb-2">
-<h4 class="font-headline font-medium text-on-surface flex items-center">
-<span class="material-symbols-outlined text-error mr-2">warning</span>
-                            Alerta Crítica
-                        </h4>
-<span class="text-xs font-label text-error bg-error-container px-2 py-1 rounded-full">Alto</span>
-</div>
-<p class="text-sm text-on-surface-variant mb-4 font-body"><strong>Estrés Crónico Detectado</strong> en el departamento de Operaciones durante las últimas 3 semanas.</p>
-<button class="text-sm font-label text-primary hover:text-primary-fixed-dim transition-colors flex items-center">
-                        Ver Detalles <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
-</button>
-</div>
-<div class="neo-raised bg-surface rounded-xl p-6 border-l-4 border-tertiary">
-<div class="flex items-start justify-between mb-2">
-<h4 class="font-headline font-medium text-on-surface flex items-center">
-<span class="material-symbols-outlined text-tertiary mr-2">info</span>
-                            Atención Requerida
-                        </h4>
-<span class="text-xs font-label text-tertiary bg-tertiary-container px-2 py-1 rounded-full">Medio</span>
-</div>
-<p class="text-sm text-on-surface-variant mb-4 font-body"><strong>Baja Participación</strong> (32%) en las encuestas de pulso del equipo de Ventas.</p>
-<button class="text-sm font-label text-primary hover:text-primary-fixed-dim transition-colors flex items-center">
-                        Enviar Recordatorio <span class="material-symbols-outlined text-sm ml-1">send</span>
-</button>
-</div>
-</div>
-<div class="lg:col-span-3 neo-raised bg-surface rounded-xl p-8">
-<h3 class="text-xl font-headline font-medium text-on-surface mb-6">Desglose por Departamento</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-<div class="neo-pressed rounded-xl p-5 flex flex-col items-center text-center">
-<div class="w-16 h-16 rounded-full neo-raised flex items-center justify-center text-2xl text-primary mb-3">
-<span class="material-symbols-outlined">engineering</span>
-</div>
-<h5 class="font-headline font-medium text-on-surface">Ingeniería</h5>
-<p class="text-sm text-on-surface-variant mb-3">85% Bienestar</p>
-<div class="w-full bg-surface-container-high rounded-full h-2 mb-1">
-<div class="bg-primary h-2 rounded-full" style="width: 85%"></div>
-</div>
-</div>
-<div class="neo-pressed rounded-xl p-5 flex flex-col items-center text-center relative overflow-hidden">
-<div class="absolute top-0 left-0 w-full h-1 bg-error"></div>
-<div class="w-16 h-16 rounded-full neo-raised flex items-center justify-center text-2xl text-error mb-3">
-<span class="material-symbols-outlined">support_agent</span>
-</div>
-<h5 class="font-headline font-medium text-on-surface">Soporte</h5>
-<p class="text-sm text-on-surface-variant mb-3">42% Bienestar</p>
-<div class="w-full bg-surface-container-high rounded-full h-2 mb-1">
-<div class="bg-error h-2 rounded-full" style="width: 42%"></div>
-</div>
-</div>
-<div class="neo-pressed rounded-xl p-5 flex flex-col items-center text-center">
-<div class="w-16 h-16 rounded-full neo-raised flex items-center justify-center text-2xl text-tertiary mb-3">
-<span class="material-symbols-outlined">campaign</span>
-</div>
-<h5 class="font-headline font-medium text-on-surface">Marketing</h5>
-<p class="text-sm text-on-surface-variant mb-3">78% Bienestar</p>
-<div class="w-full bg-surface-container-high rounded-full h-2 mb-1">
-<div class="bg-tertiary h-2 rounded-full" style="width: 78%"></div>
-</div>
-</div>
-<div class="neo-pressed rounded-xl p-5 flex flex-col items-center text-center relative overflow-hidden">
-<div class="absolute top-0 left-0 w-full h-1 bg-tertiary"></div>
-<div class="w-16 h-16 rounded-full neo-raised flex items-center justify-center text-2xl text-on-surface-variant mb-3">
-<span class="material-symbols-outlined">point_of_sale</span>
-</div>
-<h5 class="font-headline font-medium text-on-surface">Ventas</h5>
-<p class="text-sm text-on-surface-variant mb-3">Sin Datos (Baja Part.)</p>
-<div class="w-full bg-surface-container-high rounded-full h-2 mb-1">
-<div class="bg-surface-dim h-2 rounded-full" style="width: 100%"></div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+        <div>
+            <h1 class="text-3xl font-headline font-semibold text-on-surface mb-2">Análisis de Sentimiento Organizacional</h1>
+            <p class="text-on-surface-variant font-body">Visión general del bienestar organizacional basada en registros reales.</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-2 neo-raised bg-surface rounded-xl p-8 flex flex-col">
+            <h3 class="text-xl font-headline font-medium text-on-surface mb-6">Distribución de Emociones (Total: {{ stats?.totalRecords || 0 }})</h3>
+            
+            <div class="space-y-6">
+                @if (stats?.summary) {
+                    @for (item of stats.summary | keyvalue; track item.key) {
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="capitalize">{{ formatKey(item.key) }}</span>
+                                <span class="font-bold">{{ item.value }}</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high rounded-full h-4 overflow-hidden neo-inset">
+                                <div class="bg-primary h-full rounded-full" [style.width.%]="(item.value / stats.totalRecords) * 100"></div>
+                            </div>
+                        </div>
+                    }
+                } @else {
+                    <p class="text-center py-10 italic">No hay datos suficientes para mostrar el análisis.</p>
+                }
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-6">
+            <div class="neo-raised bg-surface rounded-xl p-6 border-l-4 border-primary">
+                <h4 class="font-headline font-medium text-on-surface flex items-center mb-2">
+                    <span class="material-symbols-outlined text-primary mr-2">insights</span>
+                    Resumen de Datos
+                </h4>
+                <p class="text-sm text-on-surface-variant mb-4 font-body">Se han recopilado {{ stats?.totalRecords || 0 }} registros de bienestar.</p>
+            </div>
+        </div>
+    </div>
 </main>

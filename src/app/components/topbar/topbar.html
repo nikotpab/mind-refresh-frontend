@@ -7,21 +7,24 @@
         <!-- Notifications -->
         <button class="topbar-icon-btn" aria-label="Notifications">
             <span class="material-symbols-outlined">notifications</span>
-            <span class="notification-badge">3</span>
+            <span class="notification-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
         </button>
 
         <!-- Profile -->
         <div class="profile-wrapper">
+            <!-- Backdrop to close dropdown -->
+            <div class="profile-backdrop" *ngIf="profileMenuOpen" (click)="closeProfileMenu()"></div>
+
             <button class="topbar-avatar-btn" (click)="toggleProfileMenu()" aria-label="Profile menu">
                 <img alt="Profile" class="topbar-avatar"
-                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-e0g84OuXcUJfZD6Jj0PlXTG4xbL6BFDAFfMqhDNL0eWxU8rrht4KlA6xun38BhDu3Sm6sIjfM8i_v29PsNdPZjyspZs3xYxx0qz_LSQ5pPXdVeJ6-dPTd7duBVGLejPvxoZaOa7YROliLjOuXd_oU46I-iITjk9AMEp2iwDafYxPPiJ1tV6bAeF4KIN6HEV7wadjDAAjN4_Y-ipWGlM02xjlNcBw2KNCRcmzOp7TCG5pOVpUujZ1gtaDvFKvcXMbTDyD4ZpJTn8"/>
+                     [src]="(currentUser$ | async)?.photoUrl || '/default-avatar.png'"/>
             </button>
 
             <!-- Dropdown Menu -->
             <div class="profile-dropdown" *ngIf="profileMenuOpen">
                 <div class="profile-dropdown-header">
                     <img alt="Profile" class="dropdown-avatar"
-                         src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-e0g84OuXcUJfZD6Jj0PlXTG4xbL6BFDAFfMqhDNL0eWxU8rrht4KlA6xun38BhDu3Sm6sIjfM8i_v29PsNdPZjyspZs3xYxx0qz_LSQ5pPXdVeJ6-dPTd7duBVGLejPvxoZaOa7YROliLjOuXd_oU46I-iITjk9AMEp2iwDafYxPPiJ1tV6bAeF4KIN6HEV7wadjDAAjN4_Y-ipWGlM02xjlNcBw2KNCRcmzOp7TCG5pOVpUujZ1gtaDvFKvcXMbTDyD4ZpJTn8"/>
+                         [src]="(currentUser$ | async)?.photoUrl || '/default-avatar.png'"/>
                     <div *ngIf="currentUser$ | async as user">
                         <p class="dropdown-name">{{ user.name || 'User' }}</p>
                         <p class="dropdown-email">{{ user.email }}</p>
@@ -41,5 +44,3 @@
     </div>
 </header>
 
-<!-- Backdrop to close dropdown -->
-<div class="profile-backdrop" *ngIf="profileMenuOpen" (click)="closeProfileMenu()"></div>

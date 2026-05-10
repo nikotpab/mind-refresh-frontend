@@ -2,10 +2,12 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/auth/auth';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, ReactiveFormsModule],
+  standalone: true,
+  imports: [RouterLink, ReactiveFormsModule, CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -14,24 +16,46 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
 
+  isLogin = true;
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
+    name: [''],
+    role: ['Colaborador']
   });
 
   error: string = '';
 
+  toggleMode() {
+    this.isLogin = !this.isLogin;
+    this.error = '';
+  }
+
   onSubmit() {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value).subscribe({
-        next: () => {
-          this.router.navigate(['/emotional-record']);
-        },
-        error: (err) => {
-          this.error = 'Credenciales inválidas. Intente de nuevo.';
-          console.error(err);
-        }
-      });
+      const data = this.loginForm.value;
+      if (this.isLogin) {
+        this.authService.login({ email: data.email, password: data.password }).subscribe({
+          next: () => {
+            this.router.navigate(['/collaborator-dashboard']);
+          },
+          error: (err) => {
+            this.error = 'Credenciales inválidas. Intente de nuevo.';
+            console.error(err);
+          }
+        });
+      } else {
+        this.authService.register(data).subscribe({
+          next: () => {
+            this.isLogin = true;
+            this.error = 'Registro exitoso. Por favor inicie sesión.';
+          },
+          error: (err) => {
+            this.error = 'Error en el registro. El correo podría ya estar en uso.';
+            console.error(err);
+          }
+        });
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 <main class="p-6 md:p-8 max-w-7xl mx-auto space-y-8">
 <section class="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
 <div>
-<h1 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-2">¡Hola, Alex! 👋</h1>
+<h1 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-2">¡Hola, {{ user?.name?.split(' ')[0] || 'Usuario' }}! 👋</h1>
 <p class="text-on-surface-variant text-lg">Tu bienestar es prioridad. ¿Cómo te sientes hoy?</p>
 </div>
 <div class="neo-raised rounded-xl p-5 md:max-w-md w-full relative overflow-hidden">
@@ -24,10 +24,20 @@
 </div>
 <h2 class="text-2xl font-headline font-bold text-on-surface mb-3">Tu Registro Diario</h2>
 <p class="text-on-surface-variant max-w-md mx-auto mb-8">Un pequeño momento de reflexión puede transformar tu día. Dedica 2 minutos a tu salud mental.</p>
-<button routerLink="/emotional-record" class="neo-btn px-8 py-4 rounded-full text-primary font-headline font-bold text-lg flex items-center gap-3">
+
+<div *ngIf="hasCheckedInToday" class="flex flex-col items-center gap-3">
+    <div class="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
+        <span class="material-symbols-outlined text-[32px]">check_circle</span>
+    </div>
+    <p class="text-primary font-bold text-lg">¡Check-in completado por hoy!</p>
+    <p class="text-sm text-on-surface-variant">Gracias por dedicar tiempo a tu bienestar. Vuelve mañana.</p>
+</div>
+
+<button *ngIf="!hasCheckedInToday" routerLink="/emotional-record" 
+        class="neo-btn px-8 py-4 rounded-full font-headline font-bold text-lg flex items-center gap-3 transition-all duration-300 text-primary">
 <span class="material-symbols-outlined" data-icon="how_to_reg">how_to_reg</span>
-                    Hacer Check-in Emocional
-                </button>
+    Hacer Check-in Emocional
+</button>
 </div>
 <div class="neo-raised rounded-xl p-6 flex flex-col h-full">
 <h3 class="font-headline font-semibold text-on-surface mb-6 flex items-center gap-2">
@@ -37,15 +47,15 @@
 <div class="space-y-6 flex-1">
 <div class="flex justify-between items-center">
 <span class="text-on-surface-variant text-sm">Check-ins completados</span>
-<span class="font-bold text-primary">4/5</span>
+<span class="font-bold text-primary">{{ summary?.checkinsCount || 0 }}/{{ summary?.totalPossible || 5 }}</span>
 </div>
 <div class="w-full neo-pressed h-4 rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full" style="width: 80%;"></div>
+<div class="h-full bg-primary rounded-full" [style.width.%]="((summary?.checkinsCount || 0) / (summary?.totalPossible || 5)) * 100"></div>
 </div>
 <div class="grid grid-cols-2 gap-4 mt-6">
 <div class="neo-pressed rounded-lg p-3 text-center">
-<span class="block text-2xl mb-1">😊</span>
-<span class="text-xs text-on-surface-variant font-medium">Estado Promedio</span>
+<span class="block text-2xl mb-1">{{ summary?.lastMoods?.length ? getEmotionEmoji(summary.lastMoods[0].emotion) : '😐' }}</span>
+<span class="text-xs text-on-surface-variant font-medium">Último Estado</span>
 </div>
 <div class="neo-pressed rounded-lg p-3 text-center">
 <span class="block text-2xl mb-1">🧘</span>
@@ -53,7 +63,7 @@
 </div>
 </div>
 </div>
-<button class="neo-btn w-full mt-6 py-3 rounded-lg text-primary font-semibold text-sm flex items-center justify-center gap-2">
+<button routerLink="/emotional-history" class="neo-btn w-full mt-6 py-3 rounded-lg text-primary font-semibold text-sm flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-[18px]" data-icon="history">history</span>
                     Ver Mi Historial de Bienestar
                 </button>
@@ -67,78 +77,36 @@
 </button>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-<div class="neo-raised rounded-xl p-5 flex flex-col relative group">
-<div class="absolute top-4 right-4 z-10">
-<button class="w-8 h-8 rounded-full neo-btn flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined text-[16px]" data-icon="bookmark_border">bookmark_border</span>
-</button>
-</div>
-<div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
-<div class="absolute inset-0 bg-primary opacity-10"></div>
-<span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[48px] text-primary opacity-50" data-icon="self_improvement">self_improvement</span>
-</div>
-<div class="flex gap-2 mb-3">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-error bg-error-container rounded-md">Estrés Alto</span>
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-tertiary bg-tertiary-fixed rounded-md">Virtual</span>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg mb-1 leading-tight">Sesión de Mindfulness Guiada</h4>
-<p class="text-on-surface-variant text-sm mb-4 line-clamp-2">Aprende técnicas de respiración para reducir la ansiedad en momentos de alta carga laboral.</p>
-<div class="mt-auto flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex items-center text-xs text-on-surface-variant font-medium gap-1">
-<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
-                            Hoy, 15:00 hrs
-                        </div>
-<button class="text-primary font-semibold text-sm hover:text-tertiary transition-colors">Agendar</button>
-</div>
-</div>
-<div class="neo-raised rounded-xl p-5 flex flex-col relative group">
-<div class="absolute top-4 right-4 z-10">
-<button class="w-8 h-8 rounded-full neo-btn flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined text-[16px]" data-icon="bookmark_border">bookmark_border</span>
-</button>
-</div>
-<div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
-<div class="absolute inset-0 bg-tertiary opacity-10"></div>
-<span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[48px] text-tertiary opacity-50" data-icon="groups">groups</span>
-</div>
-<div class="flex gap-2 mb-3">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-primary bg-primary-fixed rounded-md">Social</span>
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-secondary bg-secondary-fixed rounded-md">Presencial</span>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg mb-1 leading-tight">Pausa Activa en Equipo</h4>
-<p class="text-on-surface-variant text-sm mb-4 line-clamp-2">Estiramientos y dinámicas de integración en la terraza para desconectar 15 minutos.</p>
-<div class="mt-auto flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex items-center text-xs text-on-surface-variant font-medium gap-1">
-<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
-                            Mañana, 11:30 hrs
-                        </div>
-<button class="text-primary font-semibold text-sm hover:text-tertiary transition-colors">Agendar</button>
-</div>
-</div>
-<div class="neo-raised rounded-xl p-5 flex flex-col relative group">
-<div class="absolute top-4 right-4 z-10">
-<button class="w-8 h-8 rounded-full neo-btn flex items-center justify-center text-secondary">
-<span class="material-symbols-outlined text-[16px]" data-icon="bookmark_border">bookmark_border</span>
-</button>
-</div>
-<div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
-<div class="absolute inset-0 bg-primary opacity-10"></div>
-<span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[48px] text-primary opacity-50" data-icon="restaurant">restaurant</span>
-</div>
-<div class="flex gap-2 mb-3">
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-primary bg-primary-fixed rounded-md">Nutrición</span>
-<span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-tertiary bg-tertiary-fixed rounded-md">Taller</span>
-</div>
-<h4 class="font-headline font-bold text-on-surface text-lg mb-1 leading-tight">Snacks Saludables en la Oficina</h4>
-<p class="text-on-surface-variant text-sm mb-4 line-clamp-2">Charla interactiva sobre cómo mantener la energía durante el día con opciones rápidas.</p>
-<div class="mt-auto flex items-center justify-between border-t border-outline-variant/30 pt-4">
-<div class="flex items-center text-xs text-on-surface-variant font-medium gap-1">
-<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
-                            Jueves, 13:00 hrs
-                        </div>
-<button class="text-primary font-semibold text-sm hover:text-tertiary transition-colors">Agendar</button>
-</div>
-</div>
+    @for (event of suggestedEvents; track event.id) {
+        <div class="neo-raised rounded-xl p-5 flex flex-col relative group">
+            <div class="absolute top-4 right-4 z-10">
+                <button class="w-8 h-8 rounded-full neo-btn flex items-center justify-center text-secondary">
+                    <span class="material-symbols-outlined text-[16px]" data-icon="bookmark_border">bookmark_border</span>
+                </button>
+            </div>
+            <div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
+                <div class="absolute inset-0 bg-primary opacity-10"></div>
+                <span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[48px] text-primary opacity-50" data-icon="event">event</span>
+            </div>
+            <div class="flex gap-2 mb-3">
+                <span class="px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-tertiary bg-tertiary-fixed rounded-md">Recomendado</span>
+            </div>
+            <h4 class="font-headline font-bold text-on-surface text-lg mb-1 leading-tight">{{ event.title }}</h4>
+            <p class="text-on-surface-variant text-sm mb-4 line-clamp-2">{{ event.description }}</p>
+            <div class="mt-auto flex items-center justify-between border-t border-outline-variant/30 pt-4">
+                <div class="flex items-center text-xs text-on-surface-variant font-medium gap-1">
+                    <span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+                    {{ event.date | date:'short' }}
+                </div>
+                <button class="text-primary font-semibold text-sm hover:text-tertiary transition-colors">Agendar</button>
+            </div>
+        </div>
+    } @empty {
+        <div class="col-span-full py-12 text-center neo-pressed rounded-2xl">
+            <span class="material-symbols-outlined text-4xl text-on-surface-variant/30 mb-2">calendar_today</span>
+            <p class="text-on-surface-variant italic">No hay eventos sugeridos en este momento.</p>
+        </div>
+    }
 </div>
 </section>
 </main>

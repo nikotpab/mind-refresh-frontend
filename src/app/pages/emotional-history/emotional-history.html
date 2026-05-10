@@ -1,0 +1,52 @@
+<main class="p-6 md:p-8 max-w-4xl mx-auto space-y-8">
+    <header class="flex items-center gap-4 mb-8">
+        <button routerLink="/collaborator-dashboard" class="w-10 h-10 rounded-full neo-raised flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <div>
+            <h1 class="text-3xl font-headline font-bold text-on-surface">Mi Historial de Bienestar</h1>
+            <p class="text-on-surface-variant font-medium">Revisa tus registros emocionales pasados.</p>
+        </div>
+    </header>
+
+    @if (loading) {
+        <div class="text-center py-12">
+            <p class="text-on-surface-variant italic">Cargando tu historial...</p>
+        </div>
+    }
+
+    @if (!loading && history.length === 0) {
+        <div class="neo-raised bg-surface rounded-2xl p-12 text-center">
+            <span class="material-symbols-outlined text-[64px] text-on-surface-variant/50 mb-4">history_toggle_off</span>
+            <h3 class="text-xl font-bold text-on-surface mb-2">Aún no hay registros</h3>
+            <p class="text-on-surface-variant">Realiza tu primer check-in emocional para comenzar a ver tu historial aquí.</p>
+            <button routerLink="/emotional-record" class="neo-btn mt-6 px-8 py-3 rounded-full text-primary font-bold">Hacer Check-in</button>
+        </div>
+    }
+
+    @if (!loading && history.length > 0) {
+        <div class="space-y-4">
+            @for (record of history; track record.id) {
+                <div class="neo-raised bg-surface rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center gap-4 group hover:scale-[1.01] transition-transform">
+                    <div class="w-16 h-16 rounded-full neo-pressed flex items-center justify-center text-4xl shrink-0">
+                        {{ getEmotionEmoji(record.emotion) }}
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="text-lg font-bold text-on-surface">{{ getEmotionLabel(record.emotion) }}</h3>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant">
+                                {{ record.createdAt | date:'medium' }}
+                            </span>
+                        </div>
+                        <p *ngIf="record.notes" class="text-on-surface-variant text-sm mt-2 italic border-l-2 border-primary/30 pl-3 py-1">
+                            "{{ record.notes }}"
+                        </p>
+                        <p *ngIf="!record.notes" class="text-on-surface-variant/50 text-sm mt-2 italic">
+                            Sin notas adicionales.
+                        </p>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</main>

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 import { EventCatalog } from './pages/event-catalog/event-catalog';
 import { EmotionalRecord } from './pages/emotional-record/emotional-record';
+import { EmotionalHistory } from './pages/emotional-history/emotional-history';
 import { EventManagement } from './pages/event-management/event-management';
 import { CollaboratorDashboard } from './pages/collaborator-dashboard/collaborator-dashboard';
 import { SentimentAnalytics } from './pages/sentiment-analytics/sentiment-analytics';
@@ -21,7 +22,9 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'collaborator-dashboard', component: CollaboratorDashboard },
+      { path: 'emotional-history', component: EmotionalHistory },
       { path: 'event-catalog', component: EventCatalog },
+
       { 
         path: 'event-management', 
         component: EventManagement, 
