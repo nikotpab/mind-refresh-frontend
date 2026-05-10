@@ -22,9 +22,24 @@ export const routes: Routes = [
     children: [
       { path: 'collaborator-dashboard', component: CollaboratorDashboard },
       { path: 'event-catalog', component: EventCatalog },
-      { path: 'event-management', component: EventManagement, canActivate: [RoleGuard], data: { role: 'admin' } },
-      { path: 'sentiment-analytics', component: SentimentAnalytics, canActivate: [RoleGuard], data: { role: 'admin' } },
-      { path: 'strategic-dashboard', component: StrategicDashboard, canActivate: [RoleGuard], data: { role: 'admin' } },
+      { 
+        path: 'event-management', 
+        component: EventManagement, 
+        canActivate: [RoleGuard], 
+        data: { roles: ['Administrador', 'Líder'] } 
+      },
+      { 
+        path: 'sentiment-analytics', 
+        component: SentimentAnalytics, 
+        canActivate: [RoleGuard], 
+        data: { roles: ['Administrador'] } 
+      },
+      { 
+        path: 'strategic-dashboard', 
+        component: StrategicDashboard, 
+        canActivate: [RoleGuard], 
+        data: { roles: ['Administrador', 'Líder'] } 
+      },
       { path: 'profile', component: Profile },
     ]
   },

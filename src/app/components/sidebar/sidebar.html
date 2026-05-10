@@ -19,7 +19,7 @@
             Dashboard
         </a>
 
-        <a *ngIf="user.role === 'admin'"
+        <a *ngIf="user.role === 'Administrador'"
            routerLink="/sentiment-analytics"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
@@ -35,12 +35,12 @@
             Events
         </a>
 
-        <a *ngIf="user.role === 'admin'"
+        <a *ngIf="user.role === 'Administrador' || user.role === 'Líder'"
            routerLink="/strategic-dashboard"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
             <span class="material-symbols-outlined mr-3">settings</span>
-            Settings
+            Strategic Analytics
         </a>
     </nav>
 

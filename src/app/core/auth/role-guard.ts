@@ -11,14 +11,18 @@ export class RoleGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot): boolean | UrlTree {
     const user = this.authService.getCurrentUser();
-    const expectedRole = route.data['role'];
+    const allowedRoles = route.data['roles'] as Array<string>;
 
-    if (user && user.role === expectedRole) {
+    if (!user) {
+      return this.router.parseUrl('/login');
+    }
+
+    if (!allowedRoles || allowedRoles.includes(user.role)) {
       return true;
     }
 
     // Redirect to default dashboard if not authorized
-    alert('Access Denied: You do not have permission to view this page.');
+    alert(`Acceso Denegado: Su rol de '${user.role}' no tiene permiso para ver esta página.`);
     return this.router.parseUrl('/collaborator-dashboard');
   }
 }
