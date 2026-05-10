@@ -23,4 +23,11 @@ export class StrategicDashboard implements OnInit {
   formatKey(key: any): string {
     return String(key).replace('sentiment_', '').replace('_', ' ');
   }
+
+  getHeatmapColor(value: any): string {
+    const val = Number(value);
+    if (val >= 4) return '#4a6741'; // Positive (Primary)
+    if (val >= 3) return '#8a9b6e'; // Neutral
+    return '#ba1a1a'; // Negative (Error/Red)
+  }
 }

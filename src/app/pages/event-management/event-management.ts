@@ -16,11 +16,15 @@ export class EventManagement implements OnInit {
 
   events: any[] = [];
   showForm = false;
+  isEditing = false;
+  editingId: string | null = null;
 
   eventForm = this.fb.group({
     title: ['', Validators.required],
     description: ['', Validators.required],
-    date: ['', Validators.required]
+    date: ['', Validators.required],
+    facilitator: [''],
+    targetDepartment: ['']
   });
 
   ngOnInit() {
@@ -34,16 +38,52 @@ export class EventManagement implements OnInit {
     });
   }
 
+  toggleForm() {
+    this.showForm = !this.showForm;
+    if (!this.showForm) {
+      this.resetForm();
+    }
+  }
+
+  resetForm() {
+    this.isEditing = false;
+    this.editingId = null;
+    this.eventForm.reset();
+  }
+
+  editEvent(event: any) {
+    this.isEditing = true;
+    this.editingId = event.id;
+    this.showForm = true;
+    this.eventForm.patchValue({
+      title: event.title,
+      description: event.description,
+      date: event.date,
+      facilitator: event.facilitator,
+      targetDepartment: event.targetDepartment
+    });
+  }
+
   onSubmit() {
     if (this.eventForm.valid) {
-      this.eventsService.create(this.eventForm.value).subscribe({
-        next: () => {
-          this.loadEvents();
-          this.showForm = false;
-          this.eventForm.reset();
-        },
-        error: (err) => console.error('Error creating event', err)
-      });
+      const data = this.eventForm.value;
+      if (this.isEditing && this.editingId) {
+        this.eventsService.update(this.editingId, data).subscribe({
+          next: () => {
+            this.loadEvents();
+            this.toggleForm();
+          },
+          error: (err) => console.error('Error updating event', err)
+        });
+      } else {
+        this.eventsService.create(data).subscribe({
+          next: () => {
+            this.loadEvents();
+            this.toggleForm();
+          },
+          error: (err) => console.error('Error creating event', err)
+        });
+      }
     }
   }
 

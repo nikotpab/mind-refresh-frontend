@@ -16,4 +16,12 @@ export class UsersService {
   updateProfile(data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/profile`, data);
   }
+
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiUrl);
+  }
+
+  updateRole(id: string, role: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${id}/role`, { role });
+  }
 }

@@ -7,24 +7,24 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="neo-raised rounded-2xl p-6 bg-surface">
             <h3 class="text-sm font-bold text-on-surface-variant uppercase mb-2">Participación Total</h3>
-            <p class="text-4xl font-bold text-primary">{{ stats?.totalRecords || 0 }}</p>
-            <p class="text-xs text-on-surface-variant mt-2">Registros acumulados</p>
+            <p class="text-4xl font-bold text-primary">{{ stats?.participationRate || 0 }}%</p>
+            <p class="text-xs text-on-surface-variant mt-2">Tasa de asistencia a eventos</p>
         </div>
         <div class="neo-raised rounded-2xl p-6 bg-surface">
-            <h3 class="text-sm font-bold text-on-surface-variant uppercase mb-2">Clima General</h3>
-            <p class="text-4xl font-bold text-secondary">Saludable</p>
-            <p class="text-xs text-on-surface-variant mt-2">Basado en tendencias recientes</p>
+            <h3 class="text-sm font-bold text-on-surface-variant uppercase mb-2">Eficiencia de Talento</h3>
+            <p class="text-4xl font-bold text-secondary">{{ stats?.talentEfficiency?.current || 0 }}%</p>
+            <p class="text-xs text-on-surface-variant mt-2">Objetivo estratégico: {{ stats?.talentEfficiency?.target }}%</p>
         </div>
         <div class="neo-raised rounded-2xl p-6 bg-surface">
             <h3 class="text-sm font-bold text-on-surface-variant uppercase mb-2">Eventos Activos</h3>
-            <p class="text-4xl font-bold text-tertiary">Activos</p>
-            <p class="text-xs text-on-surface-variant mt-2">Programados para esta semana</p>
+            <p class="text-4xl font-bold text-tertiary">12</p>
+            <p class="text-xs text-on-surface-variant mt-2">Programados para este mes</p>
         </div>
     </div>
 
-    <div class="neo-raised rounded-3xl p-8 bg-surface">
-        <h2 class="text-xl font-bold mb-6">Distribución de Sentimiento Global</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="neo-raised rounded-3xl p-8 bg-surface">
+            <h2 class="text-xl font-bold mb-6">Distribución de Sentimiento Global</h2>
             <div class="space-y-4">
                 @if (stats?.summary) {
                     @for (item of stats.summary | keyvalue; track item.key) {
@@ -40,11 +40,51 @@
                     }
                 }
             </div>
-            <div class="flex flex-col justify-center">
-                <div class="neo-inset rounded-2xl p-6 italic text-on-surface-variant text-sm">
-                    "Los datos sugieren un aumento en la satisfacción laboral correlacionado con la frecuencia de las pausas activas programadas."
-                </div>
+        </div>
+
+        <div class="neo-raised rounded-3xl p-8 bg-surface">
+            <h2 class="text-xl font-bold mb-6">Mapa de Calor por Departamento</h2>
+            <div class="space-y-6">
+                @if (stats?.departmentMoodHeatmap) {
+                    @for (item of stats.departmentMoodHeatmap | keyvalue; track item.key) {
+                        <div class="flex items-center gap-4">
+                            <span class="w-24 text-xs font-bold">{{ item.key }}</span>
+                            <div class="flex-1 h-8 rounded-lg flex items-center px-4" 
+                                 [style.background-color]="getHeatmapColor(item.value)">
+                                <span class="text-white text-xs font-bold">{{ item.value }} / 5.0</span>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
+        </div>
+    </div>
+
+    <div class="neo-raised rounded-3xl p-8 bg-surface">
+        <h2 class="text-xl font-bold mb-4">Monitor de Cumplimiento</h2>
+        <p class="text-on-surface-variant text-sm mb-6">Revisión del compromiso con las tareas asignadas según el código de conducta.</p>
+        <div class="overflow-hidden rounded-xl border border-outline-variant/30">
+            <table class="w-full text-left text-sm">
+                <thead class="bg-surface-container-low font-bold">
+                    <tr>
+                        <th class="p-4">Métrica</th>
+                        <th class="p-4">Estado</th>
+                        <th class="p-4">Tendencia</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-outline-variant/20">
+                    <tr>
+                        <td class="p-4">Asistencia a Talleres</td>
+                        <td class="p-4 text-primary font-bold">Óptimo</td>
+                        <td class="p-4">↗️ +5%</td>
+                    </tr>
+                    <tr>
+                        <td class="p-4">Pausas Activas</td>
+                        <td class="p-4 text-secondary font-bold">En Progreso</td>
+                        <td class="p-4">➡️ Estable</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </main>

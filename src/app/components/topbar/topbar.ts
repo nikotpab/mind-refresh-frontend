@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
@@ -16,6 +16,7 @@ export class Topbar implements OnInit {
   profileMenuOpen = false;
   private authService = inject(AuthService);
   private notificationsService = inject(NotificationsService);
+  private cdr = inject(ChangeDetectorRef);
   currentUser$ = this.authService.currentUser$;
   notifications: any[] = [];
   notificationsOpen = false;
@@ -27,6 +28,7 @@ export class Topbar implements OnInit {
   ngOnInit() {
     this.sub = this.notificationsService.notifications$.subscribe(data => {
       this.notifications = data;
+      this.cdr.detectChanges();
     });
   }
 
