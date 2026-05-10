@@ -27,10 +27,15 @@
                         <span class="material-symbols-outlined text-primary">schedule</span>
                         {{ event.date | date:'medium' }}
                     </div>
-                    <button class="neo-button w-full bg-surface text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2">
-                        Inscribirme
-                        <span class="material-symbols-outlined">how_to_reg</span>
-                    </button>
+                    <div class="flex gap-2">
+                        <button class="neo-button flex-1 bg-surface text-primary font-bold py-3 rounded-xl flex items-center justify-center gap-2">
+                            Inscribirme
+                            <span class="material-symbols-outlined">how_to_reg</span>
+                        </button>
+                        <button (click)="inviteUser(event)" class="neo-button px-4 bg-surface text-tertiary font-bold py-3 rounded-xl flex items-center justify-center gap-2" title="Invitar a alguien">
+                            <span class="material-symbols-outlined">person_add</span>
+                        </button>
+                    </div>
                 </div>
             </article>
         } @empty {

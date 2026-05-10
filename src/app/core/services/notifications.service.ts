@@ -16,4 +16,13 @@ export class NotificationsService {
   markAsRead(id: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/read`, {});
   }
+
+  shareQuote(email: string, quote: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/share`, {
+      email,
+      message: quote,
+      title: 'Te han enviado una frase inspiradora ✨',
+      type: 'QUOTE_SHARED'
+    });
+  }
 }
