@@ -1,7 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
+import { NotificationsService } from '../../core/services/notifications.service';
 
 @Component({
   selector: 'app-topbar',
@@ -10,12 +11,25 @@ import { AuthService } from '../../core/auth/auth';
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.css']
 })
-export class Topbar {
+export class Topbar implements OnInit {
   profileMenuOpen = false;
   private authService = inject(AuthService);
+  private notificationsService = inject(NotificationsService);
   currentUser$ = this.authService.currentUser$;
+  notifications: any[] = [];
 
   constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.notificationsService.getNotifications().subscribe({
+      next: (data) => this.notifications = data,
+      error: (err) => console.error('Error fetching notifications', err)
+    });
+  }
+
+  get unreadCount(): number {
+    return this.notifications.filter(n => !n.read).length;
+  }
 
   get pageTitle(): string {
     const url = this.router.url;

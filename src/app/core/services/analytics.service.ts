@@ -1,0 +1,33 @@
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AnalyticsService {
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:3000/api/v1/analytics';
+
+  private getNoCacheHeaders() {
+    return {
+      headers: new HttpHeaders({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      })
+    };
+  }
+
+  getSummary(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/summary`, this.getNoCacheHeaders());
+  }
+
+  getSentimentAnalysis(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/sentiment`, this.getNoCacheHeaders());
+  }
+
+  getStrategicStats(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/strategic`, this.getNoCacheHeaders());
+  }
+}
