@@ -6,11 +6,12 @@ import { EventsService } from '../../core/services/events.service';
 import { NotificationsService } from '../../core/services/notifications.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-collaborator-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, FormsModule],
   templateUrl: './collaborator-dashboard.html',
   styleUrl: './collaborator-dashboard.css',
 })
@@ -27,17 +28,44 @@ export class CollaboratorDashboard implements OnInit {
   suggestedEvents: any[] = [];
   hasCheckedInToday = false;
   dailyQuote: string = 'La calma es la cuna del poder. Tómate un momento para respirar y reconectar.';
+  
+  isShareModalOpen = false;
+  shareEmail = '';
+  isSharing = false;
+  shareSuccess = false;
 
-  shareQuote() {
-    const email = window.prompt('¿A quién quieres enviarle esta frase? (Ingresa su correo)');
-    if (email && email.trim()) {
-      this.notificationsService.shareQuote(email.trim(), this.dailyQuote).subscribe({
+  openShareModal() {
+    this.isShareModalOpen = true;
+    this.shareEmail = '';
+    this.shareSuccess = false;
+  }
+
+  closeShareModal() {
+    this.isShareModalOpen = false;
+  }
+
+  sendQuote() {
+    if (this.shareEmail && this.shareEmail.trim()) {
+      this.isSharing = true;
+      this.shareSuccess = false;
+      this.cdr.detectChanges();
+
+      this.notificationsService.shareQuote(this.shareEmail.trim(), this.dailyQuote).subscribe({
         next: () => {
-          alert('¡Frase compartida con éxito! ✨');
+          this.isSharing = false;
+          this.shareSuccess = true;
+          this.cdr.detectChanges();
+          setTimeout(() => {
+            this.closeShareModal();
+            this.cdr.detectChanges();
+          }, 2000);
         },
         error: (err) => {
+          this.isSharing = false;
+          this.cdr.detectChanges();
           console.error('Error sharing quote', err);
-          alert('No se pudo enviar la frase. Asegúrate de que el correo sea válido.');
+          const errorMsg = err.error?.message || 'No se pudo enviar la frase. Asegúrate de que el correo sea válido.';
+          alert(errorMsg);
         }
       });
     }
