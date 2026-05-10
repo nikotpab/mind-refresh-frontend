@@ -1,20 +1,74 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { io, Socket } from 'socket.io-client';
+import { AuthService } from '../auth/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsService {
   private http = inject(HttpClient);
+  private authService = inject(AuthService);
   private apiUrl = 'http://localhost:3000/api/v1/notifications';
+  private socket: Socket | null = null;
+
+  private notificationsSubject = new BehaviorSubject<any[]>([]);
+  public notifications$ = this.notificationsSubject.asObservable();
+
+  private newNotificationSubject = new Subject<any>();
+  public newNotification$ = this.newNotificationSubject.asObservable();
+
+  constructor() {
+    this.authService.currentUser$.subscribe(user => {
+      if (user) {
+        this.initSocket(user.id);
+        this.loadNotifications();
+      } else {
+        this.disconnectSocket();
+      }
+    });
+  }
+
+  private initSocket(userId: string) {
+    if (this.socket) return;
+    
+    this.socket = io('http://localhost:3000', {
+      query: { userId }
+    });
+
+    this.socket.on('notification', (notification) => {
+      const current = this.notificationsSubject.value;
+      this.notificationsSubject.next([notification, ...current]);
+      this.newNotificationSubject.next(notification);
+    });
+  }
+
+  private disconnectSocket() {
+    if (this.socket) {
+      this.socket.disconnect();
+      this.socket = null;
+    }
+  }
+
+  loadNotifications() {
+    this.http.get<any[]>(this.apiUrl).subscribe(notifications => {
+      this.notificationsSubject.next(notifications);
+    });
+  }
 
   getNotifications(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.notifications$;
   }
 
   markAsRead(id: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/${id}/read`, {});
+    return this.http.put(`${this.apiUrl}/${id}/read`, {}).pipe(
+      tap(() => {
+        const current = this.notificationsSubject.value;
+        const updated = current.map(n => n.id === id ? { ...n, read: true } : n);
+        this.notificationsSubject.next(updated);
+      })
+    );
   }
 
   shareQuote(email: string, quote: string): Observable<any> {
@@ -26,3 +80,5 @@ export class NotificationsService {
     });
   }
 }
+
+import { tap } from 'rxjs/operators';

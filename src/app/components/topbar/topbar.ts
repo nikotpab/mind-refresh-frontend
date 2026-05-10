@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
 import { NotificationsService } from '../../core/services/notifications.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-topbar',
@@ -19,18 +20,22 @@ export class Topbar implements OnInit {
   notifications: any[] = [];
   notificationsOpen = false;
   activeFilter: 'ALL' | 'EVENT_GENERAL' | 'EVENT_INVITATION' | 'QUOTE_SHARED' = 'ALL';
+  private sub: Subscription | null = null;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
-    this.loadNotifications();
+    this.sub = this.notificationsService.notifications$.subscribe(data => {
+      this.notifications = data;
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
   }
 
   loadNotifications() {
-    this.notificationsService.getNotifications().subscribe({
-      next: (data) => this.notifications = data,
-      error: (err) => console.error('Error fetching notifications', err)
-    });
+    this.notificationsService.loadNotifications();
   }
 
   setFilter(filter: any) {
@@ -51,9 +56,7 @@ export class Topbar implements OnInit {
 
   markAsRead(notification: any) {
     if (!notification.read) {
-      this.notificationsService.markAsRead(notification.id).subscribe(() => {
-        notification.read = true;
-      });
+      this.notificationsService.markAsRead(notification.id).subscribe();
     }
   }
 

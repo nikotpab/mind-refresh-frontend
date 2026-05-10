@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   private loadUserFromStorage() {
-    const user = localStorage.getItem('user');
+    const user = sessionStorage.getItem('user');
     if (user) {
       this.currentUserSubject.next(JSON.parse(user));
     }
@@ -27,8 +27,8 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
       tap((response: any) => {
         if (response && response.access_token) {
-          localStorage.setItem('access_token', response.access_token);
-          localStorage.setItem('user', JSON.stringify(response.user));
+          sessionStorage.setItem('access_token', response.access_token);
+          sessionStorage.setItem('user', JSON.stringify(response.user));
           this.currentUserSubject.next(response.user);
         }
       })
@@ -40,22 +40,22 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
 
   updateUser(user: any) {
-    localStorage.setItem('user', JSON.stringify(user));
+    sessionStorage.setItem('user', JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
 
   get isAuthenticated(): boolean {
-    return !!localStorage.getItem('access_token');
+    return !!sessionStorage.getItem('access_token');
   }
 
   getToken(): string | null {
-    return localStorage.getItem('access_token');
+    return sessionStorage.getItem('access_token');
   }
 
   getCurrentUser(): any {
