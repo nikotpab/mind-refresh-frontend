@@ -4,6 +4,10 @@
             <div>
                 <h2 class="text-lg font-headline font-semibold text-primary leading-tight">Mind Refresh</h2>
                 <p class="text-xs text-on-surface-variant font-medium">Corporate Wellness</p>
+                <!-- Debug Tag (Delete after fix) -->
+                <p class="text-[8px] bg-secondary/10 text-secondary px-1 rounded mt-1" *ngIf="currentUser$ | async as user">
+                   Role: {{ user.role }} | {{ user.email }}
+                </p>
             </div>
         </div>
     </div>
@@ -16,7 +20,7 @@
             Dashboard
         </a>
 
-        <a *ngIf="user.role === 'Administrador'"
+        <a *ngIf="user.role?.toLowerCase() === 'administrador' || user.role?.toLowerCase() === 'admin'"
            routerLink="/sentiment-analytics"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
@@ -32,12 +36,28 @@
             Events
         </a>
 
-        <a *ngIf="user.role === 'Administrador' || user.role === 'Líder'"
+        <a *ngIf="['administrador', 'admin', 'líder', 'leader'].includes(user.role?.toLowerCase())"
+           routerLink="/event-management"
+           routerLinkActive="sidebar-link-active"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">event_note</span>
+            Manage Events
+        </a>
+
+        <a *ngIf="['administrador', 'admin', 'líder', 'leader'].includes(user.role?.toLowerCase())"
            routerLink="/strategic-dashboard"
            routerLinkActive="sidebar-link-active"
            class="sidebar-link">
-            <span class="material-symbols-outlined mr-3">settings</span>
+            <span class="material-symbols-outlined mr-3">query_stats</span>
             Strategic Analytics
+        </a>
+
+        <a *ngIf="user.role?.toLowerCase() === 'administrador' || user.role?.toLowerCase() === 'admin'"
+           routerLink="/user-management"
+           routerLinkActive="sidebar-link-active"
+           class="sidebar-link">
+            <span class="material-symbols-outlined mr-3">group</span>
+            User Sinergy
         </a>
     </nav>
 

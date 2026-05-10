@@ -7,6 +7,7 @@ import { EventManagement } from './pages/event-management/event-management';
 import { CollaboratorDashboard } from './pages/collaborator-dashboard/collaborator-dashboard';
 import { SentimentAnalytics } from './pages/sentiment-analytics/sentiment-analytics';
 import { StrategicDashboard } from './pages/strategic-dashboard/strategic-dashboard';
+import { UserManagement } from './pages/user-management/user-management';
 import { DashboardLayout } from './layouts/dashboard-layout/dashboard-layout';
 import { AuthGuard } from './core/auth/auth-guard';
 import { RoleGuard } from './core/auth/role-guard';
@@ -29,19 +30,25 @@ export const routes: Routes = [
         path: 'event-management', 
         component: EventManagement, 
         canActivate: [RoleGuard], 
-        data: { roles: ['Administrador', 'Líder'] } 
+        data: { roles: ['Administrador', 'admin', 'Líder', 'leader'] } 
       },
       { 
         path: 'sentiment-analytics', 
         component: SentimentAnalytics, 
         canActivate: [RoleGuard], 
-        data: { roles: ['Administrador'] } 
+        data: { roles: ['Administrador', 'admin'] } 
       },
       { 
         path: 'strategic-dashboard', 
         component: StrategicDashboard, 
         canActivate: [RoleGuard], 
-        data: { roles: ['Administrador', 'Líder'] } 
+        data: { roles: ['Administrador', 'admin', 'Líder', 'leader'] } 
+      },
+      { 
+        path: 'user-management', 
+        component: UserManagement, 
+        canActivate: [RoleGuard], 
+        data: { roles: ['Administrador', 'admin'] } 
       },
       { path: 'profile', component: Profile },
     ]

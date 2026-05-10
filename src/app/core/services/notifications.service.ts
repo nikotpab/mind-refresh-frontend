@@ -1,6 +1,7 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { io, Socket } from 'socket.io-client';
 import { AuthService } from '../auth/auth';
 
@@ -10,6 +11,7 @@ import { AuthService } from '../auth/auth';
 export class NotificationsService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
+  private zone = inject(NgZone);
   private apiUrl = 'http://localhost:3000/api/v1/notifications';
   private socket: Socket | null = null;
 
@@ -37,10 +39,15 @@ export class NotificationsService {
       query: { userId }
     });
 
-    this.socket.on('notification', (notification) => {
-      const current = this.notificationsSubject.value;
-      this.notificationsSubject.next([notification, ...current]);
-      this.newNotificationSubject.next(notification);
+    this.socket.on('notification', (notification: any) => {
+      this.zone.run(() => {
+        const current = this.notificationsSubject.value;
+        // Prevent duplicates
+        if (!current.some(n => n.id === notification.id)) {
+          this.notificationsSubject.next([notification, ...current]);
+          this.newNotificationSubject.next(notification);
+        }
+      });
     });
   }
 
@@ -80,5 +87,3 @@ export class NotificationsService {
     });
   }
 }
-
-import { tap } from 'rxjs/operators';
