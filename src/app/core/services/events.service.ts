@@ -24,4 +24,8 @@ export class EventsService {
   delete(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+
+  invite(eventId: string, email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${eventId}/invite`, { email });
+  }
 }

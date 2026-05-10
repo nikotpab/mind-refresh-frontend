@@ -17,14 +17,44 @@ export class Topbar implements OnInit {
   private notificationsService = inject(NotificationsService);
   currentUser$ = this.authService.currentUser$;
   notifications: any[] = [];
+  notificationsOpen = false;
+  activeFilter: 'ALL' | 'EVENT_GENERAL' | 'EVENT_INVITATION' | 'QUOTE_SHARED' = 'ALL';
 
   constructor(private router: Router) {}
 
   ngOnInit() {
+    this.loadNotifications();
+  }
+
+  loadNotifications() {
     this.notificationsService.getNotifications().subscribe({
       next: (data) => this.notifications = data,
       error: (err) => console.error('Error fetching notifications', err)
     });
+  }
+
+  setFilter(filter: any) {
+    this.activeFilter = filter;
+  }
+
+  get filteredNotifications() {
+    if (this.activeFilter === 'ALL') return this.notifications;
+    return this.notifications.filter(n => n.type === this.activeFilter);
+  }
+
+  toggleNotifications() {
+    this.notificationsOpen = !this.notificationsOpen;
+    if (this.notificationsOpen) {
+      this.profileMenuOpen = false;
+    }
+  }
+
+  markAsRead(notification: any) {
+    if (!notification.read) {
+      this.notificationsService.markAsRead(notification.id).subscribe(() => {
+        notification.read = true;
+      });
+    }
   }
 
   get unreadCount(): number {

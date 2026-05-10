@@ -19,4 +19,19 @@ export class EventCatalog implements OnInit {
       error: (err) => console.error('Error fetching events', err)
     });
   }
+
+  inviteUser(event: any) {
+    const email = window.prompt(`¿A quién quieres invitar a "${event.title}"? (Ingresa su correo)`);
+    if (email && email.trim()) {
+      this.eventsService.invite(event.id, email.trim()).subscribe({
+        next: () => {
+          alert('¡Invitación enviada con éxito! 📩');
+        },
+        error: (err) => {
+          console.error('Error inviting user', err);
+          alert('No se pudo enviar la invitación. Asegúrate de que el correo sea válido.');
+        }
+      });
+    }
+  }
 }
