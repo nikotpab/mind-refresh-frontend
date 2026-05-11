@@ -12,7 +12,7 @@ export class NotificationsService {
   private http = inject(HttpClient);
   private authService = inject(AuthService);
   private zone = inject(NgZone);
-  private apiUrl = 'http://localhost:3000/api/v1/notifications';
+  private apiUrl = `${environment.apiUrl}/notifications`;
   private socket: Socket | null = null;
 
   private notificationsSubject = new BehaviorSubject<any[]>([]);
