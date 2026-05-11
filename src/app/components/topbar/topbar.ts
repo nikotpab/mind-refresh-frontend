@@ -26,10 +26,17 @@ export class Topbar implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    console.log('Topbar: Initializing...');
     this.sub = this.notificationsService.notifications$.subscribe(data => {
+      console.log('Topbar: Received notifications update:', data.length);
       this.notifications = data;
+      // Force change detection to ensure the badge appears
+      this.cdr.markForCheck();
       this.cdr.detectChanges();
     });
+
+    // Also load notifications immediately in case they weren't loaded yet
+    this.notificationsService.loadNotifications();
   }
 
   ngOnDestroy() {

@@ -24,28 +24,46 @@ export class NotificationsService {
   constructor() {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
+        console.log('NotificationsService: User logged in, initializing...', user.id);
         this.initSocket(user.id);
         this.loadNotifications();
       } else {
+        console.log('NotificationsService: User logged out, disconnecting socket');
         this.disconnectSocket();
+        this.notificationsSubject.next([]);
       }
     });
   }
 
   private initSocket(userId: string) {
-    if (this.socket) return;
+    if (this.socket) {
+      console.log('NotificationsService: Socket already initialized');
+      return;
+    }
     
+    console.log('NotificationsService: Connecting to socket.io...');
     this.socket = io('http://localhost:3000', {
       query: { userId }
     });
 
+    this.socket.on('connect', () => {
+      console.log('NotificationsService: Socket connected successfully');
+    });
+
+    this.socket.on('connect_error', (error) => {
+      console.error('NotificationsService: Socket connection error:', error);
+    });
+
     this.socket.on('notification', (notification: any) => {
+      console.log('NotificationsService: New notification received via socket:', notification);
       this.zone.run(() => {
         const current = this.notificationsSubject.value;
         // Prevent duplicates
         if (!current.some(n => n.id === notification.id)) {
-          this.notificationsSubject.next([notification, ...current]);
+          const updated = [notification, ...current];
+          this.notificationsSubject.next(updated);
           this.newNotificationSubject.next(notification);
+          console.log('NotificationsService: Updated notifications list (socket)', updated.length);
         }
       });
     });
@@ -59,8 +77,17 @@ export class NotificationsService {
   }
 
   loadNotifications() {
-    this.http.get<any[]>(this.apiUrl).subscribe(notifications => {
-      this.notificationsSubject.next(notifications);
+    console.log('NotificationsService: Loading notifications from API...');
+    this.http.get<any[]>(this.apiUrl).subscribe({
+      next: (notifications) => {
+        console.log('NotificationsService: Loaded notifications from API:', notifications.length);
+        this.zone.run(() => {
+          this.notificationsSubject.next(notifications);
+        });
+      },
+      error: (err) => {
+        console.error('NotificationsService: Error loading notifications', err);
+      }
     });
   }
 
@@ -71,9 +98,11 @@ export class NotificationsService {
   markAsRead(id: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/read`, {}).pipe(
       tap(() => {
-        const current = this.notificationsSubject.value;
-        const updated = current.map(n => n.id === id ? { ...n, read: true } : n);
-        this.notificationsSubject.next(updated);
+        this.zone.run(() => {
+          const current = this.notificationsSubject.value;
+          const updated = current.map(n => n.id === id ? { ...n, read: true } : n);
+          this.notificationsSubject.next(updated);
+        });
       })
     );
   }
