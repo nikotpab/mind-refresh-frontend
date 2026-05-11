@@ -7,42 +7,90 @@
     </header>
 
     @if (showForm) {
-        <section class="neo-raised rounded-3xl p-8 max-w-2xl mx-auto">
-            <h2 class="text-2xl font-headline font-bold mb-6">{{ isEditing ? 'Editar Evento' : 'Nuevo Evento' }}</h2>
-            <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="space-y-6">
-                <div>
-                    <label class="block text-sm font-bold mb-2">Título</label>
-                    <input formControlName="title" type="text" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold mb-2">Descripción</label>
-                    <textarea formControlName="description" rows="3" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none"></textarea>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section class="lg:col-span-2 neo-raised rounded-3xl p-8">
+                <h2 class="text-2xl font-headline font-bold mb-6">{{ isEditing ? 'Editar Evento' : 'Nuevo Evento' }}</h2>
+                <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="space-y-6">
                     <div>
-                        <label class="block text-sm font-bold mb-2">Fecha y Hora</label>
-                        <input formControlName="date" type="datetime-local" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        <label class="block text-sm font-bold mb-2">Título</label>
+                        <input formControlName="title" type="text" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2">Facilitador</label>
-                        <input formControlName="facilitator" type="text" placeholder="Ej: Nicolas Barbosa" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        <label class="block text-sm font-bold mb-2">Descripción</label>
+                        <textarea formControlName="description" rows="3" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Fecha y Hora</label>
+                            <input formControlName="date" type="datetime-local" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Facilitador</label>
+                            <input formControlName="facilitator" type="text" placeholder="Ej: Nicolas Barbosa" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Ubicación / Plataforma</label>
+                            <input formControlName="location" type="text" placeholder="Ej: Google Meet, Sala B" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold mb-2">Segmentación (Departamento)</label>
+                            <select formControlName="targetDepartment" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                                <option value="">Todos los departamentos</option>
+                                <option value="Tecnología">Tecnología</option>
+                                <option value="Recursos Humanos">Recursos Humanos</option>
+                                <option value="Ventas">Ventas</option>
+                                <option value="Operaciones">Operaciones</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-2">Recursos (separados por coma)</label>
+                        <input formControlName="resources" type="text" placeholder="Ej: Presentación, Kit de yoga, App de meditación" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                    </div>
+                    <button type="submit" [disabled]="eventForm.invalid" class="w-full neo-button bg-primary text-on-primary py-3 rounded-xl font-bold disabled:opacity-50">
+                        {{ isEditing ? 'Actualizar Evento' : 'Guardar Evento' }}
+                    </button>
+                </form>
+            </section>
+
+            <!-- Clima Laboral Insights -->
+            <aside class="space-y-6">
+                <div class="neo-raised rounded-3xl p-6 bg-secondary/5">
+                    <h3 class="font-headline font-bold text-lg mb-4 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-secondary">insights</span>
+                        Insights de Bienestar
+                    </h3>
+                    
+                    @if (teamMood?.recommendation) {
+                        <div class="bg-secondary/10 border border-secondary/20 rounded-2xl p-4 mb-4">
+                            <p class="text-xs font-bold uppercase text-secondary mb-1">Recomendación</p>
+                            <p class="text-sm text-on-surface mb-3">{{ teamMood.recommendation.reason }}</p>
+                            <button (click)="applyRecommendation()" class="text-xs font-bold text-secondary flex items-center gap-1 hover:underline">
+                                Aplicar segmentación automática
+                                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                            </button>
+                        </div>
+                    }
+
+                    <div class="space-y-3">
+                        <p class="text-xs font-bold text-on-surface-variant">Promedio por Departamento:</p>
+                        @for (dept of teamMood?.departmentMoodHeatmap | keyvalue; track dept.key) {
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs">{{ dept.key }}</span>
+                                <div class="flex items-center gap-2">
+                                    <div class="w-24 h-1.5 bg-surface neo-inset rounded-full overflow-hidden">
+                                        <div class="h-full bg-secondary" [style.width.%]="(dept.value / 5) * 100"></div>
+                                    </div>
+                                    <span class="text-[10px] font-bold">{{ dept.value }}</span>
+                                </div>
+                            </div>
+                        }
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-bold mb-2">Segmentación (Departamento)</label>
-                    <select formControlName="targetDepartment" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
-                        <option value="">Todos los departamentos</option>
-                        <option value="Tecnología">Tecnología</option>
-                        <option value="Recursos Humanos">Recursos Humanos</option>
-                        <option value="Ventas">Ventas</option>
-                        <option value="Operaciones">Operaciones</option>
-                    </select>
-                </div>
-                <button type="submit" [disabled]="eventForm.invalid" class="w-full neo-button bg-primary text-on-primary py-3 rounded-xl font-bold disabled:opacity-50">
-                    {{ isEditing ? 'Actualizar Evento' : 'Guardar Evento' }}
-                </button>
-            </form>
-        </section>
+            </aside>
+        </div>
     }
 
     <section class="grid grid-cols-1 gap-6">
@@ -54,7 +102,7 @@
                         <span *ngIf="event.targetDepartment" class="px-2 py-0.5 text-[10px] font-bold bg-tertiary/10 text-tertiary rounded-full">{{ event.targetDepartment }}</span>
                     </div>
                     <p class="text-on-surface-variant text-sm">{{ event.description }}</p>
-                    <div class="flex gap-4 mt-2">
+                    <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3">
                         <p class="text-primary text-xs font-bold flex items-center gap-1">
                             <span class="material-symbols-outlined text-xs">schedule</span>
                             {{ event.date | date:'medium' }}
@@ -63,7 +111,18 @@
                             <span class="material-symbols-outlined text-xs">person</span>
                             {{ event.facilitator }}
                         </p>
+                        <p *ngIf="event.location" class="text-on-surface-variant text-xs font-bold flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">location_on</span>
+                            {{ event.location }}
+                        </p>
                     </div>
+                    @if (event.resources && event.resources.length > 0) {
+                        <div class="flex gap-2 mt-3">
+                            @for (res of event.resources; track res) {
+                                <span class="px-2 py-1 bg-surface neo-inset rounded-lg text-[10px] text-on-surface-variant">{{ res }}</span>
+                            }
+                        </div>
+                    }
                 </div>
                 <div class="flex gap-2">
                     <button (click)="editEvent(event)" class="text-primary hover:scale-110 transition-transform p-2">
