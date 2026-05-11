@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { io, Socket } from 'socket.io-client';
 import { AuthService } from '../auth/auth';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -145,11 +146,6 @@ export class NotificationsService {
       email,
       message: quote,
       title: 'Te han enviado una frase inspiradora ✨',
-      type: 'QUOTE_SHARED'
-    });
-  }
-}
-spiradora ✨',
       type: 'QUOTE_SHARED'
     });
   }
