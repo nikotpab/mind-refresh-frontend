@@ -22,8 +22,12 @@
                         <span class="material-symbols-outlined text-sm">model_training</span>
                         Evento
                     </div>
-                    <div class="w-10 h-10 rounded-full neo-raised flex items-center justify-center text-primary group-hover:scale-110 transition-transform cursor-pointer">
-                        <span class="material-symbols-outlined">bookmark_border</span>
+                    <div (click)="toggleSave(event)" 
+                         [ngClass]="isSaved(event.id) ? 'bg-primary text-white' : 'text-primary'"
+                         class="w-10 h-10 rounded-full neo-raised flex items-center justify-center group-hover:scale-110 transition-transform cursor-pointer">
+                        <span class="material-symbols-outlined">
+                            {{ isSaved(event.id) ? 'bookmark' : 'bookmark_border' }}
+                        </span>
                     </div>
                 </div>
                 <div class="z-10 relative">

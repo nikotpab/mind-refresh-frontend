@@ -12,31 +12,46 @@
                 <h2 class="text-2xl font-headline font-bold mb-6">{{ isEditing ? 'Editar Evento' : 'Nuevo Evento' }}</h2>
                 <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="space-y-6">
                     <div>
-                        <label class="block text-sm font-bold mb-2">Título</label>
-                        <input formControlName="title" type="text" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        <label class="block text-sm font-bold mb-2">Título <span class="text-error">*</span></label>
+                        <input formControlName="title" type="text" 
+                               [class.ring-error]="eventForm.get('title')?.invalid && eventForm.get('title')?.touched"
+                               class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                        @if (eventForm.get('title')?.invalid && eventForm.get('title')?.touched) {
+                            <p class="text-error text-xs mt-1 font-bold">El título es requerido</p>
+                        }
                     </div>
                     <div>
-                        <label class="block text-sm font-bold mb-2">Descripción</label>
-                        <textarea formControlName="description" rows="3" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none"></textarea>
+                        <label class="block text-sm font-bold mb-2">Descripción <span class="text-error">*</span></label>
+                        <textarea formControlName="description" rows="3" 
+                                  [class.ring-error]="eventForm.get('description')?.invalid && eventForm.get('description')?.touched"
+                                  class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20"></textarea>
+                        @if (eventForm.get('description')?.invalid && eventForm.get('description')?.touched) {
+                            <p class="text-error text-xs mt-1 font-bold">La descripción es requerida</p>
+                        }
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-sm font-bold mb-2">Fecha y Hora</label>
-                            <input formControlName="date" type="datetime-local" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                            <label class="block text-sm font-bold mb-2">Fecha y Hora <span class="text-error">*</span></label>
+                            <input formControlName="date" type="datetime-local" 
+                                   [class.ring-error]="eventForm.get('date')?.invalid && eventForm.get('date')?.touched"
+                                   class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
+                            @if (eventForm.get('date')?.invalid && eventForm.get('date')?.touched) {
+                                <p class="text-error text-xs mt-1 font-bold">La fecha es requerida</p>
+                            }
                         </div>
                         <div>
                             <label class="block text-sm font-bold mb-2">Facilitador</label>
-                            <input formControlName="facilitator" type="text" placeholder="Ej: Nicolas Barbosa" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                            <input formControlName="facilitator" type="text" placeholder="Ej: Nicolas Barbosa" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-bold mb-2">Ubicación / Plataforma</label>
-                            <input formControlName="location" type="text" placeholder="Ej: Google Meet, Sala B" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                            <input formControlName="location" type="text" placeholder="Ej: Google Meet, Sala B" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                         </div>
                         <div>
                             <label class="block text-sm font-bold mb-2">Segmentación (Departamento)</label>
-                            <select formControlName="targetDepartment" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                            <select formControlName="targetDepartment" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                                 <option value="">Todos los departamentos</option>
                                 <option value="Tecnología">Tecnología</option>
                                 <option value="Recursos Humanos">Recursos Humanos</option>
@@ -47,10 +62,16 @@
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-2">Recursos (separados por coma)</label>
-                        <input formControlName="resources" type="text" placeholder="Ej: Presentación, Kit de yoga, App de meditación" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none">
+                        <input formControlName="resources" type="text" placeholder="Ej: Presentación, Kit de yoga, App de meditación" class="w-full neo-inset bg-surface rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-primary/20">
                     </div>
-                    <button type="submit" [disabled]="eventForm.invalid" class="w-full neo-button bg-primary text-on-primary py-3 rounded-xl font-bold disabled:opacity-50">
-                        {{ isEditing ? 'Actualizar Evento' : 'Guardar Evento' }}
+                    
+                    <button type="submit" class="w-full neo-button bg-primary text-on-primary py-3 rounded-xl font-bold hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                        @if (isSubmitting) {
+                            <span class="material-symbols-outlined animate-spin">sync</span>
+                            Procesando...
+                        } @else {
+                            {{ isEditing ? 'Actualizar Evento' : 'Guardar Evento' }}
+                        }
                     </button>
                 </form>
             </section>
