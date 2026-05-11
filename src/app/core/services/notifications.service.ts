@@ -21,6 +21,9 @@ export class NotificationsService {
   private newNotificationSubject = new Subject<any>();
   public newNotification$ = this.newNotificationSubject.asObservable();
 
+  private selectedNotificationSubject = new BehaviorSubject<any>(null);
+  public selectedNotification$ = this.selectedNotificationSubject.asObservable();
+
   constructor() {
     this.authService.currentUser$.subscribe(user => {
       if (user) {
@@ -31,6 +34,7 @@ export class NotificationsService {
         console.log('NotificationsService: User logged out, disconnecting socket');
         this.disconnectSocket();
         this.notificationsSubject.next([]);
+        this.selectedNotificationSubject.next(null);
       }
     });
   }
@@ -56,6 +60,15 @@ export class NotificationsService {
 
     this.socket.on('notification', (notification: any) => {
       console.log('NotificationsService: New notification received via socket:', notification);
+      
+      // Clean up message
+      if (notification.message) {
+        notification.message = notification.message
+          .replace(/undefined/g, 'Un compañero')
+          .replace(/^"|"$/g, '') // Remove starting/ending quotes
+          .trim();
+      }
+
       this.zone.run(() => {
         const current = this.notificationsSubject.value;
         // Prevent duplicates
@@ -63,7 +76,6 @@ export class NotificationsService {
           const updated = [notification, ...current];
           this.notificationsSubject.next(updated);
           this.newNotificationSubject.next(notification);
-          console.log('NotificationsService: Updated notifications list (socket)', updated.length);
         }
       });
     });
@@ -80,9 +92,18 @@ export class NotificationsService {
     console.log('NotificationsService: Loading notifications from API...');
     this.http.get<any[]>(this.apiUrl).subscribe({
       next: (notifications) => {
-        console.log('NotificationsService: Loaded notifications from API:', notifications.length);
+        // Clean up messages: replace 'undefined' and remove surrounding quotes
+        const cleaned = notifications.map(n => ({
+          ...n,
+          message: n.message
+            ?.replace(/undefined/g, 'Un compañero')
+            ?.replace(/^"|"$/g, '')
+            ?.trim()
+        }));
+
+        console.log('NotificationsService: Loaded notifications from API:', cleaned.length);
         this.zone.run(() => {
-          this.notificationsSubject.next(notifications);
+          this.notificationsSubject.next(cleaned);
         });
       },
       error: (err) => {
@@ -95,6 +116,12 @@ export class NotificationsService {
     return this.notifications$;
   }
 
+  setSelectedNotification(notification: any) {
+    this.zone.run(() => {
+      this.selectedNotificationSubject.next(notification);
+    });
+  }
+
   markAsRead(id: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}/read`, {}).pipe(
       tap(() => {
@@ -102,6 +129,12 @@ export class NotificationsService {
           const current = this.notificationsSubject.value;
           const updated = current.map(n => n.id === id ? { ...n, read: true } : n);
           this.notificationsSubject.next(updated);
+          
+          // Also update selected if it's the one being marked
+          const selected = this.selectedNotificationSubject.value;
+          if (selected && selected.id === id) {
+            this.selectedNotificationSubject.next({ ...selected, read: true });
+          }
         });
       })
     );

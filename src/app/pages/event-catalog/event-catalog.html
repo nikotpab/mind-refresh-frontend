@@ -48,7 +48,7 @@
                         }
                     </div>
                     <div class="flex gap-2">
-                        <button (click)="enroll(event)" 
+                        <button (click)="enroll(event)"
                                 [disabled]="enrollStatus[event.id] === 'loading' || isEnrolled(event)"
                                 [ngClass]="{
                                     'bg-surface text-primary': (!enrollStatus[event.id] || enrollStatus[event.id] === 'idle') && !isEnrolled(event),
@@ -100,15 +100,15 @@
                     <div class="w-16 h-16 bg-tertiary/10 text-tertiary rounded-2xl flex items-center justify-center mx-auto mb-4">
                         <span class="material-symbols-outlined text-3xl">mail</span>
                     </div>
-                    <h2 class="text-2xl font-headline font-bold">Invitar a un colega</h2>
+                    <h2 class="text-2xl font-headline font-bold">Invitar a un compañero</h2>
                     <p class="text-sm text-on-surface-variant">¿A quién quieres invitar a <span class="font-bold text-on-surface">"{{ selectedEvent?.title }}"</span>?</p>
                 </div>
 
                 <div class="space-y-4">
                     <div class="space-y-2">
                         <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant ml-1">Correo Electrónico</label>
-                        <input [(ngModel)]="inviteEmail" 
-                               type="email" 
+                        <input [(ngModel)]="inviteEmail"
+                               type="email"
                                placeholder="colega@empresa.com"
                                class="w-full neo-inset bg-surface rounded-2xl p-4 focus:outline-none focus:ring-2 focus:ring-tertiary/20">
                     </div>
@@ -125,7 +125,7 @@
                         </p>
                     }
 
-                    <button (click)="sendInvite()" 
+                    <button (click)="sendInvite()"
                             [disabled]="!inviteEmail || inviteStatus === 'loading' || inviteStatus === 'success'"
                             class="w-full neo-button bg-tertiary text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 disabled:opacity-50 transition-all">
                         @if (inviteStatus === 'loading') {

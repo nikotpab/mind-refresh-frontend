@@ -42,7 +42,7 @@
                     @for (n of filteredNotifications; track n.id) {
                         <div class="p-4 border-b border-outline-variant/20 hover:bg-black/5 cursor-pointer transition-colors" 
                              [class.opacity-60]="n.read"
-                             (click)="markAsRead(n)">
+                             (click)="viewNotification(n)">
                             <div class="flex gap-3">
                                 <div class="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
                                      [class.bg-primary/10]="n.type === 'EVENT_GENERAL'"

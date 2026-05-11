@@ -63,6 +63,14 @@ export class Topbar implements OnInit {
     }
   }
 
+  viewNotification(notification: any) {
+    this.notificationsOpen = false;
+    this.notificationsService.setSelectedNotification(notification);
+    if (!notification.read) {
+      this.notificationsService.markAsRead(notification.id).subscribe();
+    }
+  }
+
   markAsRead(notification: any) {
     if (!notification.read) {
       this.notificationsService.markAsRead(notification.id).subscribe();
@@ -81,6 +89,7 @@ export class Topbar implements OnInit {
     if (url.includes('event-management')) return 'Event Management';
     if (url.includes('strategic-dashboard')) return 'Executive Dashboard';
     if (url.includes('profile')) return 'User Profile';
+    if (url.includes('notifications')) return 'Notifications';
     return 'Mind Refresh';
   }
 
