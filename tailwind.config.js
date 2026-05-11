@@ -15,6 +15,8 @@ module.exports = {
           "surface-container-low": "#e5e7ed",
           "surface-container": "#e2e4ea",
           "secondary-fixed": "#d8dae6",
+          "success": "#10b981",
+          "success-container": "#d1fae5",
           "tertiary": "#7c3aed",
           "inverse-primary": "#a5b4fc",
           "primary-container": "#818cf8",

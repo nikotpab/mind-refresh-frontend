@@ -23,6 +23,10 @@ export class AnalyticsService {
     return this.http.get(`${this.apiUrl}/summary`, this.getNoCacheHeaders());
   }
 
+  getTeamMood(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/team-mood`, this.getNoCacheHeaders());
+  }
+
   getSentimentAnalysis(): Observable<any> {
     return this.http.get(`${this.apiUrl}/sentiment`, this.getNoCacheHeaders());
   }
