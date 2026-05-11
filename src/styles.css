@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+@font-face {
+  font-family: 'Somatic Rounded';
+  src: url('/fonts/Somatic-Rounded.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,10 +47,11 @@
   --surface-variant: #dcdee4;
   --tertiary: #7c3aed;
   --tertiary-container: #a78bfa;
+  --font-family: 'Somatic Rounded', 'Plus Jakarta Sans', sans-serif;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-family);
   background-color: var(--background);
   color: var(--on-background);
   margin: 0;
@@ -78,7 +85,7 @@ body {
   border: none;
   border-radius: 12px;
   padding: 12px 24px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-family);
   font-weight: 600;
   cursor: pointer;
   box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.6);
@@ -101,7 +108,7 @@ body {
   border: none;
   border-radius: 12px;
   padding: 12px 16px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: var(--font-family);
   color: var(--on-surface);
   box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.5);
   outline: none;

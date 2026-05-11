@@ -10,7 +10,7 @@
     width: 16rem;
     background: var(--md-sys-color-surface, #f0f0f3);
     color: var(--md-sys-color-primary, #4a6741);
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--font-family, 'Somatic Rounded', sans-serif);
     box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.6);
     border-radius: 0 0.75rem 0.75rem 0;
     z-index: 50;
