@@ -33,7 +33,7 @@
            [routerLinkActiveOptions]="{exact: false}"
            class="sidebar-link">
             <span class="material-symbols-outlined mr-3">calendar_month</span>
-            Events
+            Eventos
         </a>
 
         <a *ngIf="['administrador', 'admin', 'líder', 'leader'].includes(user.role?.toLowerCase())"
@@ -61,10 +61,4 @@
         </a>
     </nav>
 
-    <div class="px-4 mt-auto">
-        <button routerLink="/emotional-record" class="neo-btn w-full py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-primary font-semibold">
-            <span class="material-symbols-outlined text-[20px]">add</span>
-            New Check-in
-        </button>
-    </div>
 </aside>

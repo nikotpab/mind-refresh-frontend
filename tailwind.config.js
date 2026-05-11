@@ -63,10 +63,10 @@ module.exports = {
           "full": "9999px"
       },
       "fontFamily": {
-          "headline": ["Plus Jakarta Sans", "sans-serif"],
-          "display": ["Plus Jakarta Sans", "sans-serif"],
-          "body": ["Plus Jakarta Sans", "sans-serif"],
-          "label": ["Plus Jakarta Sans", "sans-serif"]
+          "headline": ["Somatic Rounded", "Plus Jakarta Sans", "sans-serif"],
+          "display": ["Somatic Rounded", "Plus Jakarta Sans", "sans-serif"],
+          "body": ["Somatic Rounded", "Plus Jakarta Sans", "sans-serif"],
+          "label": ["Somatic Rounded", "Plus Jakarta Sans", "sans-serif"]
       }
     },
   },

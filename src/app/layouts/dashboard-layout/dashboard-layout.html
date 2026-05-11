@@ -4,4 +4,48 @@
     <main class="dashboard-content">
         <router-outlet></router-outlet>
     </main>
+
+    <!-- Global Notification Modal -->
+    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in" 
+         *ngIf="selectedNotification"
+         (click)="closeNotification()">
+        
+        <div class="neo-raised bg-surface w-full max-w-md rounded-3xl overflow-hidden animate-in zoom-in-95 duration-200" 
+             (click)="$event.stopPropagation()">
+            
+            <div class="relative p-6 md:p-8 text-center">
+                <!-- Close Button -->
+                <button class="absolute top-4 right-4 w-8 h-8 rounded-full neo-raised bg-surface flex items-center justify-center hover:scale-110 transition-transform"
+                        (click)="closeNotification()">
+                    <span class="material-symbols-outlined text-lg">close</span>
+                </button>
+
+                <div class="flex flex-col items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-1"
+                         [ngClass]="getBadgeClass(selectedNotification.type)">
+                        <span class="material-symbols-outlined text-4xl">{{ getIcon(selectedNotification.type) }}</span>
+                    </div>
+                    <div>
+                        <span class="text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md mb-2 inline-block"
+                              [ngClass]="getBadgeClass(selectedNotification.type)">
+                            {{ selectedNotification.type.replace('_', ' ') }}
+                        </span>
+                        <h2 class="text-xl md:text-2xl font-headline font-bold text-on-surface leading-tight">{{ selectedNotification.title }}</h2>
+                    </div>
+                </div>
+
+                <div class="neo-pressed bg-surface rounded-2xl p-6 mb-6 min-h-[120px] flex items-center justify-center">
+                    <p class="text-base md:text-lg text-on-surface leading-relaxed font-medium">
+                        {{ selectedNotification.message }}
+                    </p>
+                </div>
+
+                <button class="neo-btn bg-primary text-white py-3 px-10 rounded-2xl font-bold font-headline flex items-center gap-2 hover:scale-105 active:scale-95 transition-all mx-auto text-sm"
+                        (click)="closeNotification()">
+                    Entendido
+                    <span class="material-symbols-outlined text-sm">check_circle</span>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

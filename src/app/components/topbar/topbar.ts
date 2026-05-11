@@ -26,10 +26,17 @@ export class Topbar implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    console.log('Topbar: Initializing...');
     this.sub = this.notificationsService.notifications$.subscribe(data => {
+      console.log('Topbar: Received notifications update:', data.length);
       this.notifications = data;
+      // Force change detection to ensure the badge appears
+      this.cdr.markForCheck();
       this.cdr.detectChanges();
     });
+
+    // Also load notifications immediately in case they weren't loaded yet
+    this.notificationsService.loadNotifications();
   }
 
   ngOnDestroy() {
@@ -56,6 +63,14 @@ export class Topbar implements OnInit {
     }
   }
 
+  viewNotification(notification: any) {
+    this.notificationsOpen = false;
+    this.notificationsService.setSelectedNotification(notification);
+    if (!notification.read) {
+      this.notificationsService.markAsRead(notification.id).subscribe();
+    }
+  }
+
   markAsRead(notification: any) {
     if (!notification.read) {
       this.notificationsService.markAsRead(notification.id).subscribe();
@@ -74,6 +89,7 @@ export class Topbar implements OnInit {
     if (url.includes('event-management')) return 'Event Management';
     if (url.includes('strategic-dashboard')) return 'Executive Dashboard';
     if (url.includes('profile')) return 'User Profile';
+    if (url.includes('notifications')) return 'Notifications';
     return 'Mind Refresh';
   }
 
