@@ -1,59 +1,89 @@
-# MindRefreshFrontend
+# Mind Refresh - Frontend Client
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+## Overview
 
-## Development server
+Mind Refresh is a modern, responsive Single Page Application (SPA) designed to foster corporate wellness. Built with Angular, it provides employees with interfaces for daily emotional check-ins, event registration, and peer-to-peer motivational interactions, while offering administrators comprehensive sentiment analytics and strategic dashboards.
 
-To start a local development server, run:
+## Architecture & Tech Stack
+
+*   **Framework:** Angular 17+ (TypeScript)
+*   **Styling:** Tailwind CSS with custom Neumorphic design patterns
+*   **Typography:** Somatic Rounded & Plus Jakarta Sans
+*   **Real-time Client:** Socket.io-client
+*   **State Management:** RxJS (BehaviorSubjects for predictable data flow)
+
+## Prerequisites
+
+*   Node.js (v20 or higher recommended)
+*   npm (v10 or higher)
+*   Angular CLI (`npm install -g @angular/cli`)
+*   Docker & Docker Compose (for containerized deployment)
+
+## Environment Configuration
+
+The application uses Angular environments to manage API endpoints. 
+
+**Development (`src/environments/environment.ts`):**
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api/v1',
+  wsUrl: 'http://localhost:3000'
+};
+```
+
+**Production (`src/environments/environment.prod.ts`):**
+```typescript
+export const environment = {
+  production: true,
+  apiUrl: '/api/v1',
+  wsUrl: '' // Inferred from origin in production proxy setups
+};
+```
+
+## Installation
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+## Running the Application
+
+### Local Development
+
+Run the development server with live-reloading:
 
 ```bash
 ng serve
 ```
+Navigate to `http://localhost:4200/`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Production Build
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Compile the application into an output directory (`dist/mind-refresh-frontend/browser`):
 
 ```bash
-ng generate --help
+npm run build
 ```
 
-## Building
+## Docker Deployment
 
-To build the project run:
+The project features a multi-stage Dockerfile that builds the Angular application and serves the static assets using a lightweight Nginx container. It includes custom Nginx routing to support the Angular router.
 
 ```bash
-ng build
+# Build the image
+docker build -t mind-refresh-frontend .
+
+# Run the container
+docker run -p 80:80 mind-refresh-frontend
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Alternatively, orchestrate alongside the backend using the root `docker-compose.yml`.
 
-## Running unit tests
+## Key Features
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+*   **Neumorphic UI:** A consistent, tactile design language utilizing custom CSS variables and utility classes.
+*   **Real-time Notifications:** Global modal alerts integrated with WebSockets via `NotificationsService` and `NgZone` for instantaneous UI updates.
+*   **Role-Based Routing:** Route protection using `AuthGuard` and `RoleGuard` to segregate employee views from executive dashboards.
+*   **Interceptors:** Centralized JWT token attachment for secure API communication.
