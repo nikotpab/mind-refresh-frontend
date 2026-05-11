@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,8 +9,18 @@ export class EventsService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/api/v1/events';
 
+  private getNoCacheHeaders() {
+    return {
+      headers: new HttpHeaders({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      })
+    };
+  }
+
   getAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(this.apiUrl, this.getNoCacheHeaders());
   }
 
   create(event: any): Observable<any> {
@@ -27,5 +37,9 @@ export class EventsService {
 
   invite(eventId: string, email: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${eventId}/invite`, { email });
+  }
+
+  enroll(eventId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${eventId}/enroll`, {});
   }
 }
