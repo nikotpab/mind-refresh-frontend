@@ -43,8 +43,4 @@ export class EventsService {
   enroll(eventId: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${eventId}/enroll`, {});
   }
-
-  toggleSave(eventId: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/${eventId}/save`, {});
-  }
 }

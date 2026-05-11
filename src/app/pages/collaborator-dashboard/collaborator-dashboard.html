@@ -133,15 +133,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     @for (event of suggestedEvents; track event.id) {
         <div class="neo-raised rounded-xl p-5 flex flex-col relative group">
-            <div class="absolute top-4 right-4 z-10">
-                <button (click)="toggleSave(event)" 
-                        [ngClass]="isSaved(event.id) ? 'bg-primary text-white' : 'text-secondary'"
-                        class="w-8 h-8 rounded-full neo-btn flex items-center justify-center transition-all">
-                    <span class="material-symbols-outlined text-[16px]">
-                        {{ isSaved(event.id) ? 'bookmark' : 'bookmark_border' }}
-                    </span>
-                </button>
-            </div>
             <div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
                 <div class="absolute inset-0 bg-primary opacity-10"></div>
                 <span class="absolute inset-0 flex items-center justify-center material-symbols-outlined text-[48px] text-primary opacity-50" data-icon="event">event</span>

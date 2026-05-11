@@ -42,24 +42,6 @@ export class CollaboratorDashboard implements OnInit {
     return event.participants.includes(this.user.id);
   }
 
-  isSaved(eventId: string): boolean {
-    return this.user?.savedEvents?.includes(eventId) || false;
-  }
-
-  toggleSave(event: any) {
-    const eventId = event.id;
-    this.eventsService.toggleSave(eventId).subscribe({
-      next: (res) => {
-        if (this.user) {
-          this.user.savedEvents = res.savedEvents;
-          this.authService.updateUser(this.user);
-          this.cdr.detectChanges();
-        }
-      },
-      error: (err) => console.error('Error toggling save', err)
-    });
-  }
-
   enroll(event: any) {
     const eventId = event.id;
     if (this.enrollStatus[eventId] === 'loading' || this.isEnrolled(event)) return;
