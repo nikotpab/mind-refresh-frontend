@@ -46,7 +46,7 @@ export class NotificationsService {
     }
     
     console.log('NotificationsService: Connecting to socket.io...');
-    this.socket = io('http://localhost:3000', {
+    this.socket = io(environment.wsUrl || '/', {
       query: { userId }
     });
 
@@ -145,6 +145,11 @@ export class NotificationsService {
       email,
       message: quote,
       title: 'Te han enviado una frase inspiradora ✨',
+      type: 'QUOTE_SHARED'
+    });
+  }
+}
+spiradora ✨',
       type: 'QUOTE_SHARED'
     });
   }
