@@ -6,7 +6,7 @@ Mind Refresh is a modern, responsive Single Page Application (SPA) designed to f
 
 ## Architecture & Tech Stack
 
-*   **Framework:** Angular 17+ (TypeScript)
+*   **Framework:** Angular 21 (TypeScript)
 *   **Styling:** Tailwind CSS with custom Neumorphic design patterns
 *   **Typography:** Somatic Rounded & Plus Jakarta Sans
 *   **Real-time Client:** Socket.io-client

@@ -48,11 +48,25 @@ export class NotificationsService {
     
     console.log('NotificationsService: Connecting to socket.io...');
     this.socket = io(environment.wsUrl || '/', {
-      query: { userId }
+      query: { userId },
+      withCredentials: true,
+      reconnection: true,
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      timeout: 20000,
     });
 
     this.socket.on('connect', () => {
       console.log('NotificationsService: Socket connected successfully');
+    });
+
+    this.socket.on('disconnect', (reason) => {
+      console.log('NotificationsService: Socket disconnected:', reason);
+      if (reason === 'io server disconnect') {
+        // the disconnection was initiated by the server, you need to reconnect manually
+        this.socket?.connect();
+      }
     });
 
     this.socket.on('connect_error', (error) => {

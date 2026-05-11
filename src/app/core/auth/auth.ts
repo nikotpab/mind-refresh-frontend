@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap, catchError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -25,10 +25,13 @@ export class AuthService {
   }
 
   login(credentials: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true }).pipe(
       tap((response: any) => {
-        if (response && response.access_token) {
-          sessionStorage.setItem('access_token', response.access_token);
+        if (response && response.message === 'Login successful') {
+          const userObj = { email: response.email, role: response.role, id: response.id };
+          sessionStorage.setItem('user', JSON.stringify(userObj));
+          this.currentUserSubject.next(userObj);
+        } else if (response && response.user) {
           sessionStorage.setItem('user', JSON.stringify(response.user));
           this.currentUserSubject.next(response.user);
         }
@@ -37,11 +40,14 @@ export class AuthService {
   }
 
   register(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, data);
+    return this.http.post(`${this.apiUrl}/register`, data, { withCredentials: true });
   }
 
   logout() {
-    sessionStorage.removeItem('access_token');
+    this.http.post(`${this.apiUrl}/logout`, {}, { withCredentials: true }).subscribe({
+      next: () => console.log('Logged out from server'),
+      error: (err) => console.error('Logout error', err)
+    });
     sessionStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
@@ -52,11 +58,11 @@ export class AuthService {
   }
 
   get isAuthenticated(): boolean {
-    return !!sessionStorage.getItem('access_token');
+    return !!sessionStorage.getItem('user');
   }
 
   getToken(): string | null {
-    return sessionStorage.getItem('access_token');
+    return null; // Token is managed via HttpOnly cookies
   }
 
   getCurrentUser(): any {
