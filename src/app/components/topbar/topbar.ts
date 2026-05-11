@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/auth/auth';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './topbar.html',
   styleUrls: ['./topbar.css']
 })
-export class Topbar implements OnInit {
+export class Topbar implements OnInit, OnDestroy {
   profileMenuOpen = false;
   private authService = inject(AuthService);
   private notificationsService = inject(NotificationsService);
@@ -26,25 +26,15 @@ export class Topbar implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    console.log('Topbar: Initializing...');
     this.sub = this.notificationsService.notifications$.subscribe(data => {
-      console.log('Topbar: Received notifications update:', data.length);
       this.notifications = data;
-      // Force change detection to ensure the badge appears
       this.cdr.markForCheck();
       this.cdr.detectChanges();
     });
-
-    // Also load notifications immediately in case they weren't loaded yet
-    this.notificationsService.loadNotifications();
   }
 
   ngOnDestroy() {
     if (this.sub) this.sub.unsubscribe();
-  }
-
-  loadNotifications() {
-    this.notificationsService.loadNotifications();
   }
 
   setFilter(filter: any) {
@@ -58,14 +48,21 @@ export class Topbar implements OnInit {
 
   toggleNotifications() {
     this.notificationsOpen = !this.notificationsOpen;
+
     if (this.notificationsOpen) {
       this.profileMenuOpen = false;
+
+      const unread = this.notifications.filter(n => !n.read);
+      unread.forEach(n => {
+        this.notificationsService.markAsRead(n.id).subscribe();
+      });
     }
   }
 
   viewNotification(notification: any) {
     this.notificationsOpen = false;
     this.notificationsService.setSelectedNotification(notification);
+    
     if (!notification.read) {
       this.notificationsService.markAsRead(notification.id).subscribe();
     }
