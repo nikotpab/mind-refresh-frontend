@@ -134,8 +134,12 @@
     @for (event of suggestedEvents; track event.id) {
         <div class="neo-raised rounded-xl p-5 flex flex-col relative group">
             <div class="absolute top-4 right-4 z-10">
-                <button class="w-8 h-8 rounded-full neo-btn flex items-center justify-center text-secondary">
-                    <span class="material-symbols-outlined text-[16px]" data-icon="bookmark_border">bookmark_border</span>
+                <button (click)="toggleSave(event)" 
+                        [ngClass]="isSaved(event.id) ? 'bg-primary text-white' : 'text-secondary'"
+                        class="w-8 h-8 rounded-full neo-btn flex items-center justify-center transition-all">
+                    <span class="material-symbols-outlined text-[16px]">
+                        {{ isSaved(event.id) ? 'bookmark' : 'bookmark_border' }}
+                    </span>
                 </button>
             </div>
             <div class="h-32 rounded-lg neo-pressed overflow-hidden mb-4 relative">
@@ -152,7 +156,27 @@
                     <span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
                     {{ event.date | date:'short' }}
                 </div>
-                <button class="text-primary font-semibold text-sm hover:text-tertiary transition-colors">Agendar</button>
+                <button (click)="enroll(event)" 
+                        [disabled]="enrollStatus[event.id] === 'loading' || isEnrolled(event)"
+                        [ngClass]="{
+                            'text-primary': !enrollStatus[event.id] || enrollStatus[event.id] === 'idle',
+                            'text-success': enrollStatus[event.id] === 'success' || isEnrolled(event),
+                            'text-error': enrollStatus[event.id] === 'error'
+                        }"
+                        class="font-bold text-sm hover:underline transition-colors flex items-center gap-1">
+                    @if (enrollStatus[event.id] === 'loading') {
+                        <span class="material-symbols-outlined text-sm animate-spin">refresh</span>
+                        ...
+                    } @else if (enrollStatus[event.id] === 'success' || isEnrolled(event)) {
+                        <span class="material-symbols-outlined text-sm">check_circle</span>
+                        {{ isEnrolled(event) ? 'Inscrito' : '¡Listo!' }}
+                    } @else if (enrollStatus[event.id] === 'error') {
+                        <span class="material-symbols-outlined text-sm">error</span>
+                        Error
+                    } @else {
+                        Inscribirme
+                    }
+                </button>
             </div>
         </div>
     } @empty {

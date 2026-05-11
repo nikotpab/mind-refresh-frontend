@@ -34,6 +34,69 @@ export class CollaboratorDashboard implements OnInit {
   isSharing = false;
   shareSuccess = false;
 
+  // Enrollment state for dashboard
+  enrollStatus: Record<string, 'idle' | 'loading' | 'success' | 'error' | 'already'> = {};
+
+  isEnrolled(event: any): boolean {
+    if (!this.user || !event.participants) return false;
+    return event.participants.includes(this.user.id);
+  }
+
+  isSaved(eventId: string): boolean {
+    return this.user?.savedEvents?.includes(eventId) || false;
+  }
+
+  toggleSave(event: any) {
+    const eventId = event.id;
+    this.eventsService.toggleSave(eventId).subscribe({
+      next: (res) => {
+        if (this.user) {
+          this.user.savedEvents = res.savedEvents;
+          this.authService.updateUser(this.user);
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => console.error('Error toggling save', err)
+    });
+  }
+
+  enroll(event: any) {
+    const eventId = event.id;
+    if (this.enrollStatus[eventId] === 'loading' || this.isEnrolled(event)) return;
+
+    this.enrollStatus = { ...this.enrollStatus, [eventId]: 'loading' };
+    this.cdr.detectChanges();
+
+    this.eventsService.enroll(eventId).subscribe({
+      next: (res) => {
+        console.log('[Dashboard] Enrollment Success:', res);
+        this.enrollStatus = { ...this.enrollStatus, [eventId]: 'success' };
+        
+        // Refresh event data locally
+        if (event.participants) {
+          event.participants.push(this.user.id);
+        } else {
+          event.participants = [this.user.id];
+        }
+        
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.enrollStatus = { ...this.enrollStatus, [eventId]: 'idle' };
+          this.cdr.detectChanges();
+        }, 3000);
+      },
+      error: (err) => {
+        console.error('[Dashboard] Enrollment Error:', err);
+        this.enrollStatus = { ...this.enrollStatus, [eventId]: 'error' };
+        this.cdr.detectChanges();
+        setTimeout(() => {
+          this.enrollStatus = { ...this.enrollStatus, [eventId]: 'idle' };
+          this.cdr.detectChanges();
+        }, 3000);
+      }
+    });
+  }
+
   openShareModal() {
     this.isShareModalOpen = true;
     this.shareEmail = '';

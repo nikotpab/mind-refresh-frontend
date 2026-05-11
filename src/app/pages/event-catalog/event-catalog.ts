@@ -36,6 +36,27 @@ export class EventCatalog {
     );
   }
 
+  isSaved(eventId: string): boolean {
+    const user = this.authService.getCurrentUser();
+    return user?.savedEvents?.includes(eventId) || false;
+  }
+
+  toggleSave(event: any) {
+    const eventId = event.id;
+    this.eventsService.toggleSave(eventId).subscribe({
+      next: (res) => {
+        const user = this.authService.getCurrentUser();
+        if (user) {
+          // Update user in storage and subject to reflect new savedEvents
+          user.savedEvents = res.savedEvents;
+          this.authService.updateUser(user);
+          this.cdr.detectChanges();
+        }
+      },
+      error: (err) => console.error('Error toggling save', err)
+    });
+  }
+
   isEnrolled(event: any): boolean {
     const user = this.authService.getCurrentUser();
     if (!user || !event.participants) return false;

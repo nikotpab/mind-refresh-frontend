@@ -20,6 +20,7 @@ export class EventManagement implements OnInit {
   teamMood: any = null;
   showForm = false;
   isEditing = false;
+  isSubmitting = false;
   editingId: string | null = null;
 
   eventForm = this.fb.group({
@@ -80,31 +81,42 @@ export class EventManagement implements OnInit {
   }
 
   onSubmit() {
-    if (this.eventForm.valid) {
-      const formValue = this.eventForm.value;
-      const data = {
-        ...formValue,
-        resources: formValue.resources ? formValue.resources.split(',').map(r => r.trim()) : []
-      };
+    console.log('[EventManagement] --- SUBMIT CLICKED ---');
+    console.log('[EventManagement] Form Valid:', this.eventForm.valid);
+    console.log('[EventManagement] Form Value:', this.eventForm.value);
 
-      if (this.isEditing && this.editingId) {
-        this.eventsService.update(this.editingId, data).subscribe({
-          next: () => {
-            this.loadEvents();
-            this.toggleForm();
-          },
-          error: (err) => console.error('Error updating event', err)
-        });
-      } else {
-        this.eventsService.create(data).subscribe({
-          next: () => {
-            this.loadEvents();
-            this.toggleForm();
-          },
-          error: (err) => console.error('Error creating event', err)
-        });
-      }
+    if (this.eventForm.invalid) {
+      console.warn('[EventManagement] Form is invalid');
+      this.eventForm.markAllAsTouched();
+      return;
     }
+
+    const formValue = this.eventForm.getRawValue();
+    const data = {
+      title: formValue.title,
+      description: formValue.description,
+      date: formValue.date,
+      facilitator: formValue.facilitator || '',
+      location: formValue.location || 'Virtual',
+      targetDepartment: formValue.targetDepartment || '',
+      resources: formValue.resources ? formValue.resources.split(',').map((r: string) => r.trim()).filter((r: string) => r !== '') : []
+    };
+
+    this.isSubmitting = true;
+    console.log('[EventManagement] Sending payload to backend:', data);
+
+    this.eventsService.create(data).subscribe({
+      next: (res) => {
+        console.log('[EventManagement] SERVER SUCCESS:', res);
+        this.isSubmitting = false;
+        this.loadEvents();
+        this.toggleForm();
+      },
+      error: (err) => {
+        console.error('[EventManagement] SERVER ERROR:', err);
+        this.isSubmitting = false;
+      }
+    });
   }
 
   applyRecommendation() {
